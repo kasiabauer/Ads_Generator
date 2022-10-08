@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
@@ -20,7 +20,7 @@ class RegisterUser(View):
 
     def get(self, request):
         form = UserCreateForm()
-        return render(request, 'form.html', {'form': form})
+        return render(request, 'form.html', {'form': form, 'headline': 'Register'})
 
     def post(self, request):
         form = UserCreateForm(request.POST)
@@ -39,7 +39,7 @@ class LoginUser(View):
 
     def get(self, request):
         form = UserLoginForm()
-        return render(request, 'form.html', {'form':form})
+        return render(request, 'form.html', {'form':form, 'headline': 'Login'})
 
     def post(self, request):
         form = UserLoginForm(request.POST)
@@ -52,4 +52,12 @@ class LoginUser(View):
                 login(request, user)
         return redirect(url)
 
+
+class LogoutUser(View):
+
+    def get(self, request):
+
+        username = request.user.username
+        logout(request)
+        return render(request, 'base.html', {'msg': f'{username} was logged out'})
 

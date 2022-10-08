@@ -24,11 +24,10 @@
           </ul>
           <span class="navbar-text">
           {% if user.is_authenticated %}
-            <p>Hello {{ user.username }}</p>
-{#          <p><a href="{% url 'logout' %}">wyloguj</a> </p>#}
+            <p>Hello {{ user.username }}, <a href="{% url 'logout' %}">logout?</a> </p>
+          <span></span>
           {% else %}
-              <p>Zaloguj się</p>
-{#        <p> {{ message }}</p>#}
+              <p><a href="{% url 'login' %}">Zaloguj się</a></p>
           {% endif %}
           </span>
         </div>
