@@ -3,17 +3,37 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
 
-from Ads_Generator.forms import UserCreateForm, UserLoginForm
+from Ads_Generator.forms import UserCreateForm, UserLoginForm, CampaignModelForm
 
 
 class IndexView(View):
+
     def get(self, request):
         return render(request, 'base.html')
 
 
 class CampaignsView(View):
+
     def get(self, request):
         return render(request, 'campaigns.html')
+
+
+class CreateCampaignView(View):
+
+    def get(self, request):
+        # u = request.user
+        # print(u.pk)
+        # u_object = User.objects.get(pk=u.pk)
+        # form = CampaignModelForm(instance=u_object)
+        form = CampaignModelForm()
+        return render(request, 'form_item.html', {'form': form, 'headline': 'Add Campaign'})
+
+    def post(self, request):
+        form = CampaignModelForm(request.POST)
+        if form.is_valid():
+            obj = form.save()
+            return redirect('campaigns')
+        return render(request, 'form_item.html', {'form': form})
 
 
 class RegisterUser(View):
