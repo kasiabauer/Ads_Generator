@@ -17,3 +17,8 @@ class UserCreateForm(forms.ModelForm):
             raise ValidationError('Hasła nie są identyczne')
 
         return data
+
+
+class UserLoginForm(forms.Form):
+    username = forms.CharField(max_length=128)
+    password = forms.CharField(widget=forms.PasswordInput)

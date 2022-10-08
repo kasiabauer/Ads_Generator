@@ -12,12 +12,24 @@
             <li class="nav-item">
               <a class="nav-link" href="/campaigns/">Campaigns</a>
             </li>
+            {% if user.is_authenticated %}
+            {% else %}
             <li class="nav-item">
               <a class="nav-link" href="/register/">Register</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/login/">Login</a>
+            </li>
+            {% endif %}
           </ul>
           <span class="navbar-text">
-            Navbar text with an inline element
+          {% if user.is_authenticated %}
+            <p>Hello {{ user.username }}</p>
+{#          <p><a href="{% url 'logout' %}">wyloguj</a> </p>#}
+          {% else %}
+              <p>Zaloguj się</p>
+{#        <p> {{ message }}</p>#}
+          {% endif %}
           </span>
         </div>
       </div>

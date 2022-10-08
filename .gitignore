@@ -2,3 +2,4 @@ venv/
 .idea/
 *.pyc
 db.sqlite3
+db.sqlite3_notes
