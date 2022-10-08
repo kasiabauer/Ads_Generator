@@ -39,7 +39,7 @@ class LoginUser(View):
 
     def get(self, request):
         form = UserLoginForm()
-        return render(request, 'form.html', {'form':form, 'headline': 'Login'})
+        return render(request, 'form.html', {'form': form, 'headline': 'Login'})
 
     def post(self, request):
         form = UserLoginForm(request.POST)

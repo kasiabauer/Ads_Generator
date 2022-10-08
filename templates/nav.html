@@ -17,9 +17,6 @@
             <li class="nav-item">
               <a class="nav-link" href="/register/">Register</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/login/">Login</a>
-            </li>
             {% endif %}
           </ul>
           <span class="navbar-text">
@@ -27,7 +24,7 @@
             <p>Hello {{ user.username }}, <a href="{% url 'logout' %}">logout?</a> </p>
           <span></span>
           {% else %}
-              <p><a href="{% url 'login' %}">Zaloguj się</a></p>
+              <p><a href="{% url 'login' %}">Login</a></p>
           {% endif %}
           </span>
         </div>
