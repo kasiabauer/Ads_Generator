@@ -30,11 +30,5 @@ class UserLoginForm(forms.Form):
 class CampaignModelForm(forms.ModelForm):
     class Meta:
         model = Campaign
-        fields = '__all__'
-        # exclude = ['user']
+        exclude = ['user']
 
-    def clean(self):
-        data = super().clean()
-        campaign_name = data['campaign_name']
-        user = data['user']
-        return data

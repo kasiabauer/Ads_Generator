@@ -21,17 +21,15 @@ class CampaignsView(View):
 class CreateCampaignView(View):
 
     def get(self, request):
-        # u = request.user
-        # print(u.pk)
-        # u_object = User.objects.get(pk=u.pk)
-        # form = CampaignModelForm(instance=u_object)
         form = CampaignModelForm()
         return render(request, 'form_item.html', {'form': form, 'headline': 'Add Campaign'})
 
     def post(self, request):
         form = CampaignModelForm(request.POST)
         if form.is_valid():
-            obj = form.save()
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
             return redirect('campaigns')
         return render(request, 'form_item.html', {'form': form})
 
