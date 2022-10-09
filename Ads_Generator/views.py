@@ -2,8 +2,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views import View
+from django.views.generic import ListView
 
 from Ads_Generator.forms import UserCreateForm, UserLoginForm, CampaignModelForm
+from Ads_Generator.models import Campaign
 
 
 class IndexView(View):
@@ -12,10 +14,9 @@ class IndexView(View):
         return render(request, 'base.html')
 
 
-class CampaignsView(View):
-
-    def get(self, request):
-        return render(request, 'campaigns.html')
+class CampaignsListView(ListView):
+        model = Campaign
+        template_name = 'list_view.html'
 
 
 class CreateCampaignView(View):

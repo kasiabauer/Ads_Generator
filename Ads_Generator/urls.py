@@ -24,6 +24,6 @@ urlpatterns = [
     path("register/", views.RegisterUser.as_view(), name='register'),
     path("login/", views.LoginUser.as_view(), name='login'),
     path("logout/", views.LogoutUser.as_view(), name='logout'),
-    path("campaigns/", views.CampaignsView.as_view(), name='campaigns'),
+    path("campaigns/", views.CampaignsListView.as_view(), name='campaigns'),
     path("add_campaign/", views.CreateCampaignView.as_view(), name='add_campaign'),
 ]
