@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django import forms
 
-from Ads_Generator.models import Campaign
+from Ads_Generator.models import Campaign, AdGroup
 
 
 class UserCreateForm(forms.ModelForm):
@@ -31,4 +31,10 @@ class CampaignModelForm(forms.ModelForm):
     class Meta:
         model = Campaign
         exclude = ['user']
+
+
+class AdgroupModelForm(forms.ModelForm):
+    class Meta:
+        model = AdGroup
+        fields = '__all__'
 

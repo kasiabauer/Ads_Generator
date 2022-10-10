@@ -26,4 +26,5 @@ urlpatterns = [
     path("logout/", views.LogoutUser.as_view(), name='logout'),
     path("campaigns/", views.CampaignsListView.as_view(), name='campaigns'),
     path("add_campaign/", views.CreateCampaignView.as_view(), name='add_campaign'),
+    path("add_adgroup/", views.CreateAdgroupView.as_view(), name='add_adgroup'),
 ]

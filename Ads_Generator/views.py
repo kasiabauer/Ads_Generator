@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import ListView
 
-from Ads_Generator.forms import UserCreateForm, UserLoginForm, CampaignModelForm
+from Ads_Generator.forms import UserCreateForm, UserLoginForm, CampaignModelForm, AdgroupModelForm
 from Ads_Generator.models import Campaign
 
 
@@ -39,6 +39,22 @@ class CreateCampaignView(View):
             obj.save()
             return redirect('campaigns')
         return render(request, 'form_item.html', {'form': form, 'headline': 'Add Campaign'})
+
+
+class CreateAdgroupView(View):
+
+    def get(self, request):
+        form = AdgroupModelForm
+        return render(request, 'form_item.html', {'form': form, 'headline': 'Add AdGroup'})
+
+    def post(self, request):
+        form = AdgroupModelForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
+            return redirect('campaigns')
+        return render(request, 'form_item.html', {'form': form, 'headline': 'Add AdGroup'})
 
 
 class RegisterUser(View):
