@@ -15,8 +15,14 @@ class IndexView(View):
 
 
 class CampaignsListView(ListView):
-        model = Campaign
-        template_name = 'list_view.html'
+    model = Campaign
+    template_name = 'list_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['headline'] = 'Campaigns'
+        context['button'] = 'Add Campaign'
+        return context
 
 
 class CreateCampaignView(View):
@@ -32,7 +38,7 @@ class CreateCampaignView(View):
             obj.user = request.user
             obj.save()
             return redirect('campaigns')
-        return render(request, 'form_item.html', {'form': form})
+        return render(request, 'form_item.html', {'form': form, 'headline': 'Add Campaign'})
 
 
 class RegisterUser(View):

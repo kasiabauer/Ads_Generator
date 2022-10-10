@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Items</h1>
-    <ul>
+    <h1>{{ headline }}</h1>
+    <button onclick="location.href='/add_campaign/'" type="button" class="btn btn-primary">{{ button }}</button>
+    <div class="list-group list-group-flush">
     {% for item in object_list %}
-        <li>{{ item }}</li>
+        <a class="list-group-item list-group-item-action" href="{{ item.id }}"> {{ item }}</a>
     {% endfor %}
-    </ul>
+    </div>
 {% endblock %}
