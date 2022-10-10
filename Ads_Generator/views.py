@@ -50,9 +50,7 @@ class CreateAdgroupView(View):
     def post(self, request):
         form = AdgroupModelForm(request.POST)
         if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = request.user
-            obj.save()
+            obj = form.save()
             return redirect('campaigns')
         return render(request, 'form_item.html', {'form': form, 'headline': 'Add AdGroup'})
 
