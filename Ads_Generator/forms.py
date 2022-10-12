@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django import forms
 
-from Ads_Generator.models import Campaign, AdGroup, Keyword
+from Ads_Generator.models import Campaign, AdGroup, Keyword, AdTextTemplate
 
 
 class UserCreateForm(forms.ModelForm):
@@ -42,4 +42,11 @@ class AdgroupModelForm(forms.ModelForm):
 class KeywordModelForm(forms.ModelForm):
     class Meta:
         model = Keyword
+        fields = '__all__'
+
+
+class AdTextTemplateForm(forms.ModelForm):
+
+    class Meta:
+        model = AdTextTemplate
         fields = '__all__'

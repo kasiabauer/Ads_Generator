@@ -2,7 +2,7 @@ import pytest
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-from Ads_Generator.models import Campaign, AdGroup, Keyword
+from Ads_Generator.models import Campaign, AdGroup, Keyword, AdTextTemplate
 
 
 # 1st test checking the system
@@ -70,7 +70,7 @@ def test_006_add_adgroup_post_logged_user(client, campaigns, users):
     AdGroup.objects.get(**adgroup_data)
 
 
-# 1st test for add adgroup view
+# 1st test for add keyword view
 @pytest.mark.django_db
 def test_007_add_keyword_post_logged_user(client, adgroups, users):
     url = reverse('add_keyword')
@@ -86,3 +86,22 @@ def test_007_add_keyword_post_logged_user(client, adgroups, users):
     assert response.url == reverse('campaigns')
     Keyword.objects.get(**keyword_data)
 
+
+# 1st test for add template view
+@pytest.mark.django_db
+def test_007_add_adtext_template_post_logged_user(client, campaigns, users):
+    url = reverse('add_adtext_template')
+    user = users[0]
+    client.force_login(user)
+    campaign = campaigns[0]
+    adtext_template_data = {
+        'adtext_template_headline_1': 'test template headline 1',
+        'adtext_template_headline_2': 'test template headline 2',
+        'adtext_template_description_1': 'test template description 1',
+        'adtext_template_description_2': 'test template description 2',
+        'campaign': campaign.id,
+    }
+    response = client.post(url, adtext_template_data)
+    assert response.status_code == 302
+    assert response.url == reverse('campaigns')
+    AdTextTemplate.objects.get(**adtext_template_data)
