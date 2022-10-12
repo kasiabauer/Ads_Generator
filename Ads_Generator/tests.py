@@ -2,7 +2,7 @@ import pytest
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-from Ads_Generator.models import Campaign, AdGroup
+from Ads_Generator.models import Campaign, AdGroup, Keyword
 
 
 # 1st test checking the system
@@ -55,14 +55,34 @@ def test_005_add_campaign_post_logged_user(client, users):
 
 # 1st test for add adgroup view
 @pytest.mark.django_db
-def test_006_add_adgroup_post_logged_user(client, campaigns):
+def test_006_add_adgroup_post_logged_user(client, campaigns, users):
     url = reverse('add_adgroup')
+    user = users[0]
+    client.force_login(user)
     campaign = campaigns[0]
     adgroup_data = {
         'adgroup_name': 'adgroup1',
-        'campaign': campaign,
+        'campaign': campaign.id,
     }
     response = client.post(url, adgroup_data)
     assert response.status_code == 302
     assert response.url == reverse('campaigns')
     AdGroup.objects.get(**adgroup_data)
+
+
+# 1st test for add adgroup view
+@pytest.mark.django_db
+def test_007_add_keyword_post_logged_user(client, adgroups, users):
+    url = reverse('add_keyword')
+    user = users[0]
+    client.force_login(user)
+    adgroup = adgroups[0]
+    keyword_data = {
+        'keyword': 'keyword1',
+        'adgroup': adgroup.id,
+    }
+    response = client.post(url, keyword_data)
+    assert response.status_code == 302
+    assert response.url == reverse('campaigns')
+    Keyword.objects.get(**keyword_data)
+
