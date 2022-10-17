@@ -5,7 +5,7 @@ from django.views import View
 from django.views.generic import ListView
 
 from Ads_Generator.forms import UserCreateForm, UserLoginForm, CampaignModelForm, AdgroupModelForm, KeywordModelForm, \
-    AdTextTemplateForm
+    AdTextTemplateForm, AdTextForm
 from Ads_Generator.models import Campaign
 
 
@@ -82,6 +82,20 @@ class CreateAdTextTemplateView(View):
             obj = form.save()
             return redirect('campaigns')
         return render(request, 'form_item.html', {'form': form, 'headline': 'Add AdText Template'})
+
+
+class CreateAdTextView(View):
+
+    def get(self, request):
+        form = AdTextForm
+        return render(request, 'form_item.html', {'form': form, 'headline': 'Add AdText'})
+
+    def post(self, request):
+        form = AdTextForm(request.POST)
+        if form.is_valid():
+            obj = form.save()
+            return redirect('campaigns')
+        return render(request, 'form_item.html', {'form': form, 'headline': 'Add AdText'})
 
 
 class RegisterUser(View):
