@@ -1,7 +1,7 @@
 import pytest
 from django.contrib.auth.models import User
 
-from Ads_Generator.models import Campaign, AdGroup
+from Ads_Generator.models import Campaign, AdGroup, Keyword
 
 
 @pytest.fixture
@@ -27,4 +27,11 @@ def adgroups(campaigns):
         lst.append(AdGroup.objects.create(adgroup_name='test_adgroup', campaign=campaign))
     return lst
 
+
+@pytest.fixture
+def keywords(adgroups):
+    lst = []
+    for adgroup in adgroups:
+        lst.append(Keyword.objects.create(keyword='test_keyword', adgroup=adgroup))
+    return lst
 

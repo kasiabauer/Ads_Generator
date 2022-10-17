@@ -148,3 +148,15 @@ def test_011_adgroup_list_view_logged_user(client, campaigns, users, adgroups):
     response = client.get(url)
     assert response.status_code == 200
     assert response.context['object_list'].count() == len(adgroups)
+
+
+# 1st test for keywords & adtexts list view
+@pytest.mark.django_db
+def test_012_keywords_adtexts_list_view_logged_user(client, keywords, adgroups, users):
+    adgroup = adgroups[0]
+    url = reverse('keyword_list', args=(adgroup.id, ))
+    user = users[0]
+    client.force_login(user)
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.context['object_list'].count() == len(keywords)

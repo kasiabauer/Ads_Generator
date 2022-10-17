@@ -1,10 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1>{{ headline }}</h1>
-    <button onclick="location.href='/add_campaign/'" type="button" class="btn btn-primary">{{ button }}</button>
+    <button onclick="location.href='/add_{{ urls }}/'" type="button" class="btn btn-primary">{{ button }}</button>
     <div class="list-group list-group-flush">
     {% for item in object_list %}
         <a class="list-group-item list-group-item-action" href="/{{ urls }}/{{ item.id }}/"> {{ item }}</a>
+    {% endfor %}
+    </div>
+    <div class="list-group list-group-flush">
+    {% for adtext in adtexts %}
+        <a  class="list-group-item list-group-item-action">{{ adtext.adtext_headline_1 }}</a>
+        <a  class="list-group-item list-group-item-action">{{ adtext.adtext_headline_2 }}</a>
+        <a  class="list-group-item list-group-item-action">{{ adtext.adtext_description_1 }}</a>
+        <a  class="list-group-item list-group-item-action">{{ adtext.adtext_description_1 }}</a>
     {% endfor %}
     </div>
 {% endblock %}
