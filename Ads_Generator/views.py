@@ -6,7 +6,7 @@ from django.views.generic import ListView
 
 from Ads_Generator.forms import UserCreateForm, UserLoginForm, CampaignModelForm, AdgroupModelForm, KeywordModelForm, \
     AdTextTemplateForm, AdTextForm
-from Ads_Generator.models import Campaign
+from Ads_Generator.models import Campaign, AdGroup
 
 
 class IndexView(View):
@@ -23,6 +23,23 @@ class CampaignsListView(ListView):
         context = super().get_context_data()
         context['headline'] = 'Campaigns'
         context['button'] = 'Add Campaign'
+        context['urls'] = 'campaign'
+        return context
+
+
+class AdgroupsListView(ListView):
+    model = AdGroup
+    template_name = 'list_view.html'
+
+    def get_queryset(self):
+        new_context = AdGroup.objects.filter(campaign_id=self.request.resolver_match.kwargs['id'])
+        return new_context
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['headline'] = 'Adgroups '
+        context['button'] = 'Add Adgroup'
+        context['urls'] = 'adgroup'
         return context
 
 

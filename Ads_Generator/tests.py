@@ -125,3 +125,23 @@ def test_009_add_adtext_post_logged_user(client, adgroups, users):
     assert response.status_code == 302
     assert response.url == reverse('campaigns')
     AdText.objects.get(**adtext_data)
+
+
+# 1st test for campaign list view
+@pytest.mark.django_db
+def test_009_add_adtext_post_logged_user(client, adgroups, users):
+    url = reverse('add_adtext')
+    user = users[0]
+    client.force_login(user)
+    adgroup = adgroups[0]
+    adtext_data = {
+        'adtext_headline_1': 'test headline 1',
+        'adtext_headline_2': 'test headline 2',
+        'adtext_description_1': 'test description 1',
+        'adtext_description_2': 'test description 2',
+        'adgroup': adgroup.id,
+    }
+    response = client.post(url, adtext_data)
+    assert response.status_code == 302
+    assert response.url == reverse('campaigns')
+    AdText.objects.get(**adtext_data)
