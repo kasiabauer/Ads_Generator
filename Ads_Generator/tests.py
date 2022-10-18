@@ -193,3 +193,61 @@ def test_014_adgroup_post_update_view_logged_user(client, campaigns, users, adgr
     response = client.post(url, data)
     assert response.status_code == 302
     AdGroup.objects.get(adgroup_name=data['adgroup_name'])
+
+
+# 1st test for keyword update view
+@pytest.mark.django_db
+def test_015_keyword_post_update_view_logged_user(client, keywords, users, adgroups):
+    keyword = keywords[0]
+    adgroup = adgroups[0]
+    url = reverse('update_keyword', args=(keyword.id, ))
+    user = users[0]
+    client.force_login(user)
+    data = {
+        'keyword': 'new keyword name',
+        'adgroup': adgroup.id
+    }
+    response = client.post(url, data)
+    assert response.status_code == 302
+    Keyword.objects.get(keyword=data['keyword'])
+
+
+# 1st test for adtext update view
+@pytest.mark.django_db
+def test_015_adtext_post_update_view_logged_user(client, users, adgroups, adtexts):
+    adgroup = adgroups[0]
+    adtext = adtexts[0]
+    url = reverse('update_adtext', args=(adtext.id, ))
+    user = users[0]
+    client.force_login(user)
+    data = {
+        'adtext_headline_1': 'test headline1',
+        'adtext_headline_2': 'test headline2',
+        'adtext_description_1': 'test description 1',
+        'adtext_description_2': 'test description 2',
+        'adgroup': adgroup.id
+    }
+    response = client.post(url, data)
+    assert response.status_code == 302
+    AdText.objects.get(adtext_headline_1=data['adtext_headline_1'])
+
+
+# 1st test for adtext template update view
+@pytest.mark.django_db
+def test_015_adtext_template_ost_update_view_logged_user(client, users, campaigns, adtext_templates):
+    campaign = campaigns[0]
+    adtext_template = adtext_templates[0]
+    url = reverse('update_adtext_template', args=(adtext_template.id, ))
+    user = users[0]
+    client.force_login(user)
+    data = {
+        'adtext_template_headline_1': 'test template headline1',
+        'adtext_template_headline_2': 'test template headline2',
+        'adtext_template_description_1': 'test template description 1',
+        'adtext_template_description_2': 'test template description 2',
+        'campaign': campaign.id
+    }
+    response = client.post(url, data)
+    assert response.status_code == 302
+    AdTextTemplate.objects.get(adtext_template_headline_1=data['adtext_template_headline_1'])
+
