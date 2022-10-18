@@ -39,6 +39,12 @@ class AdgroupModelForm(forms.ModelForm):
         fields = '__all__'
 
 
+class AdgroupModelFormUpdate(forms.ModelForm):
+    class Meta:
+        model = AdGroup
+        exclude = ['campaign']
+
+
 class KeywordModelForm(forms.ModelForm):
     class Meta:
         model = Keyword

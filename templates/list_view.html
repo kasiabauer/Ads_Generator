@@ -2,17 +2,12 @@
 {% block content %}
     <h1>{{ headline }}</h1>
     <button onclick="location.href='/add_{{ urls }}/'" type="button" class="btn btn-primary">{{ button }}</button>
-    <div class="list-group list-group-flush">
+    <ul class="list-group w-50 mt-4">
     {% for item in object_list %}
-        <a class="list-group-item list-group-item-action" href="/{{ urls }}/{{ item.id }}/"> {{ item }}</a>
+        <li class="list-group-item list-group-item-action">
+            <a href="/{{ urls }}/{{ item.id }}/">{{ item }}</a>
+            - <small><a href="/update_{{ urls }}/{{ item.id }}">edit</a></small>
+        </li>
     {% endfor %}
-    </div>
-    <div class="list-group list-group-flush">
-    {% for adtext in adtexts %}
-        <a  class="list-group-item list-group-item-action">{{ adtext.adtext_headline_1 }}</a>
-        <a  class="list-group-item list-group-item-action">{{ adtext.adtext_headline_2 }}</a>
-        <a  class="list-group-item list-group-item-action">{{ adtext.adtext_description_1 }}</a>
-        <a  class="list-group-item list-group-item-action">{{ adtext.adtext_description_1 }}</a>
-    {% endfor %}
-    </div>
+    </ul>
 {% endblock %}

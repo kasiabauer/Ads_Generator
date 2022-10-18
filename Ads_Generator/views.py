@@ -1,11 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import ListView, UpdateView
 
 from Ads_Generator.forms import UserCreateForm, UserLoginForm, CampaignModelForm, AdgroupModelForm, KeywordModelForm, \
-    AdTextTemplateForm, AdTextForm
+    AdTextTemplateForm, AdTextForm, AdgroupModelFormUpdate
 from Ads_Generator.models import Campaign, AdGroup, Keyword, AdText
 
 
@@ -77,6 +78,13 @@ class CreateCampaignView(View):
         return render(request, 'form_item.html', {'form': form, 'headline': 'Add Campaign'})
 
 
+class UpdateCampaignView(UpdateView):
+    model = Campaign
+    form_class = CampaignModelForm
+    template_name = 'form_update.html'
+    success_url = reverse_lazy('campaigns')
+
+
 class CreateAdgroupView(View):
 
     def get(self, request):
@@ -89,6 +97,18 @@ class CreateAdgroupView(View):
             obj = form.save()
             return redirect('campaigns')
         return render(request, 'form_item.html', {'form': form, 'headline': 'Add AdGroup'})
+
+
+class UpdateAdgroupView(UpdateView):
+    model = AdGroup
+    form_class = AdgroupModelFormUpdate
+    template_name = 'form_update.html'
+    success_url = reverse_lazy('campaigns')
+
+    # def get_success_url(self):
+    #     campaign = AdGroup.objects.get(pk=self._id)
+    #     success_url = reverse_lazy('adgroup_list', args=campaign.id)
+    #     return success_url
 
 
 class CreateKeywordView(View):

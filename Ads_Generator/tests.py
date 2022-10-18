@@ -160,3 +160,36 @@ def test_012_keywords_adtexts_list_view_logged_user(client, keywords, adgroups, 
     response = client.get(url)
     assert response.status_code == 200
     assert response.context['object_list'].count() == len(keywords)
+
+
+# 1st test for campaign update view
+@pytest.mark.django_db
+def test_013_campaign_post_update_view_logged_user(client, campaigns, users):
+    campaign = campaigns[0]
+    url = reverse('update_campaign', args=(campaign.id, ))
+    user = users[0]
+    client.force_login(user)
+    data = {
+        'campaign_name': 'new campaign name',
+        'user_id': user.id
+    }
+    response = client.post(url, data)
+    assert response.status_code == 302
+    Campaign.objects.get(campaign_name=data['campaign_name'])
+
+
+# 1st test for adgroup update view
+@pytest.mark.django_db
+def test_014_adgroup_post_update_view_logged_user(client, campaigns, users, adgroups):
+    campaign = campaigns[0]
+    adgroup = adgroups[0]
+    url = reverse('update_adgroup', args=(adgroup.id, ))
+    user = users[0]
+    client.force_login(user)
+    data = {
+        'adgroup_name': 'new adgroup name',
+        'campaign': campaign.id
+    }
+    response = client.post(url, data)
+    assert response.status_code == 302
+    AdGroup.objects.get(adgroup_name=data['adgroup_name'])
