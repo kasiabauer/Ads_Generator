@@ -6,8 +6,9 @@ from django.views import View
 from django.views.generic import ListView, UpdateView
 
 from Ads_Generator.forms import UserCreateForm, UserLoginForm, CampaignModelForm, AdgroupModelForm, KeywordModelForm, \
-    AdTextTemplateForm, AdTextForm, AdgroupModelFormUpdate
-from Ads_Generator.models import Campaign, AdGroup, Keyword, AdText
+    AdTextTemplateForm, AdTextForm, AdgroupModelFormUpdate, KeywordModelFormUpdate, AdTextTemplateUpdateForm, \
+    AdTextUpdateForm
+from Ads_Generator.models import Campaign, AdGroup, Keyword, AdText, AdTextTemplate
 
 
 class IndexView(View):
@@ -25,6 +26,8 @@ class CampaignsListView(ListView):
         context['headline'] = 'Campaigns'
         context['button'] = 'Add Campaign'
         context['urls'] = 'campaign'
+        adtext_template_context = AdTextTemplate.objects.all
+        context['adtextstemplate'] = adtext_template_context
         return context
 
 
@@ -81,7 +84,7 @@ class CreateCampaignView(View):
 class UpdateCampaignView(UpdateView):
     model = Campaign
     form_class = CampaignModelForm
-    template_name = 'form_update.html'
+    template_name = 'form_rename.html'
     success_url = reverse_lazy('campaigns')
 
 
@@ -102,7 +105,7 @@ class CreateAdgroupView(View):
 class UpdateAdgroupView(UpdateView):
     model = AdGroup
     form_class = AdgroupModelFormUpdate
-    template_name = 'form_update.html'
+    template_name = 'form_rename.html'
     success_url = reverse_lazy('campaigns')
 
     # def get_success_url(self):
@@ -125,6 +128,13 @@ class CreateKeywordView(View):
         return render(request, 'form_item.html', {'form': form, 'headline': 'Add Keyword'})
 
 
+class UpdateKeywordView(UpdateView):
+    model = Keyword
+    form_class = KeywordModelFormUpdate
+    template_name = 'form_update.html'
+    success_url = reverse_lazy('campaigns')
+
+
 class CreateAdTextTemplateView(View):
 
     def get(self, request):
@@ -139,6 +149,13 @@ class CreateAdTextTemplateView(View):
         return render(request, 'form_item.html', {'form': form, 'headline': 'Add AdText Template'})
 
 
+class UpdateAdTextTemplateView(UpdateView):
+    model = AdTextTemplate
+    form_class = AdTextTemplateUpdateForm
+    template_name = 'form_update.html'
+    success_url = reverse_lazy('campaigns')
+
+
 class CreateAdTextView(View):
 
     def get(self, request):
@@ -151,6 +168,13 @@ class CreateAdTextView(View):
             obj = form.save()
             return redirect('campaigns')
         return render(request, 'form_item.html', {'form': form, 'headline': 'Add AdText'})
+
+
+class UpdateAdTextView(UpdateView):
+    model = AdText
+    form_class = AdTextUpdateForm
+    template_name = 'form_update.html'
+    success_url = reverse_lazy('campaigns')
 
 
 class RegisterUser(View):

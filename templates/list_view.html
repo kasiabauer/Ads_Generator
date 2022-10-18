@@ -7,6 +7,9 @@
         <li class="list-group-item list-group-item-action">
             <a href="/{{ urls }}/{{ item.id }}/">{{ item }}</a>
             - <small><a href="/update_{{ urls }}/{{ item.id }}">edit</a></small>
+            {%  for template in adtextstemplate %}
+                <small><a href="/update_adtext_template/{{ template.id }}">template</a></small>
+                {% endfor %}
         </li>
     {% endfor %}
     </ul>

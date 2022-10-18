@@ -34,5 +34,8 @@ urlpatterns = [
     path("add_adtext/", views.CreateAdTextView.as_view(), name='add_adtext'),
     path('update_campaign/<int:pk>/', views.UpdateCampaignView.as_view(), name='update_campaign'),
     path('update_adgroup/<int:pk>/', views.UpdateAdgroupView.as_view(), name='update_adgroup'),
+    path('update_keyword/<int:pk>/', views.UpdateKeywordView.as_view(), name='update_keyword'),
+    path('update_adtext_template/<int:pk>/', views.UpdateAdTextTemplateView.as_view(), name='update_adtext_template'),
+    path('update_adtext/<int:pk>/', views.UpdateAdTextView.as_view(), name='update_adtext'),
 
 ]

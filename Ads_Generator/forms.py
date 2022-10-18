@@ -51,6 +51,12 @@ class KeywordModelForm(forms.ModelForm):
         fields = '__all__'
 
 
+class KeywordModelFormUpdate(forms.ModelForm):
+    class Meta:
+        model = Keyword
+        exclude = ['adgroup']
+
+
 class AdTextTemplateForm(forms.ModelForm):
 
     class Meta:
@@ -58,8 +64,22 @@ class AdTextTemplateForm(forms.ModelForm):
         fields = '__all__'
 
 
+class AdTextTemplateUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = AdTextTemplate
+        exclude = ['campaign']
+
+
 class AdTextForm(forms.ModelForm):
 
     class Meta:
         model = AdText
         fields = '__all__'
+
+
+class AdTextUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = AdText
+        exclude = ['adgroup']
