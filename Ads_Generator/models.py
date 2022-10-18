@@ -4,7 +4,7 @@ from django.urls import reverse
 
 
 class Campaign(models.Model):
-    campaign_name = models.CharField(max_length=128)
+    campaign_name = models.CharField(max_length=128)  # UNIQUE_TOGETHER (poprzez klasę Meta)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

@@ -1,9 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, UpdateView, DeleteView
 
 from Ads_Generator.forms import UserCreateForm, UserLoginForm, CampaignModelForm, AdgroupModelForm, KeywordModelForm, \
     AdTextTemplateForm, AdTextForm, AdgroupModelFormUpdate, KeywordModelFormUpdate, AdTextTemplateUpdateForm, \
@@ -88,17 +88,27 @@ class UpdateCampaignView(UpdateView):
     success_url = reverse_lazy('campaigns')
 
 
+class CampaignDelete(DeleteView):
+    model = Campaign
+    success_url = reverse_lazy('campaigns')
+    template_name = 'item_confirm_delete.html'
+
+
 class CreateAdgroupView(View):
 
-    def get(self, request):
+    def get(self, request, campaign_id):
         form = AdgroupModelForm
         return render(request, 'form_item.html', {'form': form, 'headline': 'Add AdGroup'})
 
-    def post(self, request):
+    def post(self, request, campaign_id):
         form = AdgroupModelForm(request.POST)
         if form.is_valid():
-            obj = form.save()
-            return redirect('campaigns')
+            obj = form.save(commit=False)
+            campaign = Campaign.objects.get(id=campaign_id)
+            obj.campaign = campaign
+            obj.save()
+            url = reverse('adgroup_list', args=(campaign_id, ))
+            return redirect(url)
         return render(request, 'form_item.html', {'form': form, 'headline': 'Add AdGroup'})
 
 
@@ -106,12 +116,17 @@ class UpdateAdgroupView(UpdateView):
     model = AdGroup
     form_class = AdgroupModelFormUpdate
     template_name = 'form_rename.html'
-    success_url = reverse_lazy('campaigns')
+    # success_url = reverse_lazy('campaigns')
 
-    # def get_success_url(self):
-    #     campaign = AdGroup.objects.get(pk=self._id)
-    #     success_url = reverse_lazy('adgroup_list', args=campaign.id)
-    #     return success_url
+    def get_success_url(self):
+        success_url = reverse('adgroup_list', args=(self.object.campaign.id, ))
+        return success_url
+
+
+class AdgroupDelete(DeleteView):
+    model = AdGroup
+    success_url = reverse_lazy('campaigns')
+    template_name = 'item_confirm_delete.html'
 
 
 class CreateKeywordView(View):

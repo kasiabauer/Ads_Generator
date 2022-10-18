@@ -27,8 +27,9 @@ urlpatterns = [
     path("campaigns/", views.CampaignsListView.as_view(), name='campaigns'),
     path("campaign/<int:id>/", views.AdgroupsListView.as_view(), name='adgroup_list'),
     path("adgroup/<int:id>/", views.KeywordsAdTextsListView.as_view(), name='keyword_list'),
-    path("add_campaign/", views.CreateCampaignView.as_view(), name='add_campaign'),
-    path("add_adgroup/", views.CreateAdgroupView.as_view(), name='add_adgroup'),
+    path("campaigns/add_campaign/", views.CreateCampaignView.as_view(), name='add_campaign'),
+    path("campaign/<int:campaign_id>/add_adgroup/", views.CreateAdgroupView.as_view(), name='add_adgroup'),
+    # path("add_adgroup/", views.CreateAdgroupView.as_view(), name='add_adgroup'),
     path("add_keyword/", views.CreateKeywordView.as_view(), name='add_keyword'),
     path("add_adtext_template/", views.CreateAdTextTemplateView.as_view(), name='add_adtext_template'),
     path("add_adtext/", views.CreateAdTextView.as_view(), name='add_adtext'),
@@ -37,5 +38,7 @@ urlpatterns = [
     path('update_keyword/<int:pk>/', views.UpdateKeywordView.as_view(), name='update_keyword'),
     path('update_adtext_template/<int:pk>/', views.UpdateAdTextTemplateView.as_view(), name='update_adtext_template'),
     path('update_adtext/<int:pk>/', views.UpdateAdTextView.as_view(), name='update_adtext'),
+    path('delete_campaign/<int:pk>/', views.CampaignDelete.as_view(), name='delete_campaign'),
+    path('delete_adgroup/<int:pk>/', views.AdgroupDelete.as_view(), name='delete_adgroup'),
 
 ]

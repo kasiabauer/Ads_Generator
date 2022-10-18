@@ -36,7 +36,7 @@ class CampaignModelForm(forms.ModelForm):
 class AdgroupModelForm(forms.ModelForm):
     class Meta:
         model = AdGroup
-        fields = '__all__'
+        fields = ['adgroup_name']
 
 
 class AdgroupModelFormUpdate(forms.ModelForm):

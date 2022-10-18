@@ -56,17 +56,17 @@ def test_005_add_campaign_post_logged_user(client, users):
 # 1st test for add adgroup view
 @pytest.mark.django_db
 def test_006_add_adgroup_post_logged_user(client, campaigns, users):
-    url = reverse('add_adgroup')
+    campaign = campaigns[0]
+    url = reverse('add_adgroup', args=(campaign.id,))
     user = users[0]
     client.force_login(user)
-    campaign = campaigns[0]
     adgroup_data = {
         'adgroup_name': 'adgroup1',
         'campaign': campaign.id,
     }
     response = client.post(url, adgroup_data)
     assert response.status_code == 302
-    assert response.url == reverse('campaigns')
+    assert response.url == reverse('adgroup_list', args=(campaign.id,))
     AdGroup.objects.get(**adgroup_data)
 
 
