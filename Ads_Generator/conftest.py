@@ -9,7 +9,7 @@ def users():
     lst = []
     for x in range(10):
         lst.append(User.objects.create(username=str(x)))
-        return lst
+    return lst
 
 
 @pytest.fixture
