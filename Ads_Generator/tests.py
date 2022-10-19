@@ -73,17 +73,17 @@ def test_006_add_adgroup_post_logged_user(client, campaigns, users):
 # 1st test for add keyword view
 @pytest.mark.django_db
 def test_007_add_keyword_post_logged_user(client, adgroups, users):
-    url = reverse('add_keyword')
+    adgroup = adgroups[0]
+    url = reverse('add_keyword', args=(adgroup.id, ))
     user = users[0]
     client.force_login(user)
-    adgroup = adgroups[0]
     keyword_data = {
         'keyword': 'keyword1',
         'adgroup': adgroup.id,
     }
     response = client.post(url, keyword_data)
     assert response.status_code == 302
-    assert response.url == reverse('campaigns')
+    assert response.url == reverse('keyword_list', args=(adgroup.id, ))
     Keyword.objects.get(**keyword_data)
 
 
@@ -200,7 +200,7 @@ def test_014_adgroup_post_update_view_logged_user(client, campaigns, users, adgr
 def test_015_keyword_post_update_view_logged_user(client, keywords, users, adgroups):
     keyword = keywords[0]
     adgroup = adgroups[0]
-    url = reverse('update_keyword', args=(keyword.id, ))
+    url = reverse('update_keyword', args=(keyword.id, adgroup.id,  ))
     user = users[0]
     client.force_login(user)
     data = {
@@ -217,7 +217,7 @@ def test_015_keyword_post_update_view_logged_user(client, keywords, users, adgro
 def test_015_adtext_post_update_view_logged_user(client, users, adgroups, adtexts):
     adgroup = adgroups[0]
     adtext = adtexts[0]
-    url = reverse('update_adtext', args=(adtext.id, ))
+    url = reverse('update_adtext', args=(adtext.id, adgroup.id, ))
     user = users[0]
     client.force_login(user)
     data = {

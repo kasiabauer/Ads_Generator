@@ -19,7 +19,7 @@ class IndexView(View):
 
 class CampaignsListView(ListView):
     model = Campaign
-    template_name = 'list_view.html'
+    template_name = 'list_view_campaigns.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -123,23 +123,28 @@ class UpdateAdgroupView(UpdateView):
         return success_url
 
 
-class AdgroupDelete(DeleteView):
+class AdgroupDeleteView(DeleteView):
     model = AdGroup
     success_url = reverse_lazy('campaigns')
     template_name = 'item_confirm_delete.html'
 
+    def get_success_url(self):
+        success_url = reverse('adgroup_list', args=(self.object.campaign.id, ))
+        return success_url
+
 
 class CreateKeywordView(View):
 
-    def get(self, request):
+    def get(self, request, adgroup_id):
         form = KeywordModelForm
         return render(request, 'form_item.html', {'form': form, 'headline': 'Add Keyword'})
 
-    def post(self, request):
+    def post(self, request, adgroup_id):
         form = KeywordModelForm(request.POST)
         if form.is_valid():
             obj = form.save()
-            return redirect('campaigns')
+            success_url = reverse('keyword_list', args=(adgroup_id, ))
+            return redirect(success_url)
         return render(request, 'form_item.html', {'form': form, 'headline': 'Add Keyword'})
 
 
@@ -147,7 +152,19 @@ class UpdateKeywordView(UpdateView):
     model = Keyword
     form_class = KeywordModelFormUpdate
     template_name = 'form_update.html'
-    success_url = reverse_lazy('campaigns')
+
+    def get_success_url(self):
+        success_url = reverse('keyword_list', args=(self.object.adgroup.id, ))
+        return success_url
+
+
+class KeywordDeleteView(DeleteView):
+    model = Keyword
+    template_name = 'item_confirm_delete.html'
+
+    def get_success_url(self):
+        success_url = reverse('keyword_list', args=(self.object.adgroup.id, ))
+        return success_url
 
 
 class CreateAdTextTemplateView(View):
@@ -189,7 +206,11 @@ class UpdateAdTextView(UpdateView):
     model = AdText
     form_class = AdTextUpdateForm
     template_name = 'form_update.html'
-    success_url = reverse_lazy('campaigns')
+    # success_url = reverse_lazy('campaigns')
+
+    def get_success_url(self):
+        success_url = reverse('keyword_list', args=(self.object.adgroup.id, ))
+        return success_url
 
 
 class RegisterUser(View):
