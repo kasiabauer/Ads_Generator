@@ -213,6 +213,15 @@ class UpdateAdTextView(UpdateView):
         return success_url
 
 
+class AdTextDeleteView(DeleteView):
+    model = AdText
+    template_name = 'item_confirm_delete.html'
+
+    def get_success_url(self):
+        success_url = reverse('keyword_list', args=(self.object.adgroup.id, ))
+        return success_url
+
+
 class RegisterUser(View):
 
     def get(self, request):

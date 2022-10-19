@@ -289,12 +289,26 @@ def test_019_delete_adgroup_post_logged_user(client, users, campaigns, adgroups)
 def test_020_delete_keyword_post_logged_user(client, users, keywords, adgroups):
     keyword = keywords[0]
     adgroup = adgroups[0]
-    url = reverse('delete_adgroup', args=(adgroup.id, keyword.id, ))
+    url = reverse('delete_keyword', args=(adgroup.id, keyword.id, ))
     user = users[0]
     client.force_login(user)
     response = client.post(url)
     assert response.status_code == 302
-    assert response.url == reverse('adgroup_list', args=(adgroup.id, ))
-    assert len(adgroups) == 10
-    assert AdGroup.objects.all().count() == 9
+    assert response.url == reverse('keyword_list', args=(adgroup.id, ))
+    assert len(keywords) == 10
+    assert Keyword.objects.all().count() == 9
 
+
+# 1st test for delete adtext view
+@pytest.mark.django_db
+def test_021_delete_adtext_post_logged_user(client, users, adtexts, adgroups):
+    adtext = adtexts[0]
+    adgroup = adgroups[0]
+    url = reverse('delete_adtext', args=(adgroup.id, adtext.id, ))
+    user = users[0]
+    client.force_login(user)
+    response = client.post(url)
+    assert response.status_code == 302
+    assert response.url == reverse('keyword_list', args=(adgroup.id, ))
+    assert len(adtexts) == 10
+    assert AdText.objects.all().count() == 9

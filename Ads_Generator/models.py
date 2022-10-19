@@ -35,7 +35,7 @@ class AdText(models.Model):
     adgroup = models.ForeignKey(AdGroup, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.pk, self.adtext_headline_1}'
+        return f'AdText with headline1: {self.adtext_headline_1}'
 
 
 class AdTextTemplate(models.Model):
