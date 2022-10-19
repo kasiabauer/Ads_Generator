@@ -10,7 +10,7 @@
             {%  for template in adtextstemplate %}
                 <small><a href="/update_adtext_template/{{ template.id }}">template</a></small>
                 {% endfor %}
-            <small><a href="/delete_{{ urls }}/{{ item.id }}/">delete</a></small>
+            <small><a href="delete_{{ urls }}/{{ item.id }}/">delete</a></small>
         </li>
     {% endfor %}
     </ul>

@@ -21,7 +21,10 @@
   <tbody>
     {% for item in object_list %}
     <tr>
-        <th scope="row">{{ item }} - <small><a href="/update_keyword/{{ item.id }}">edit</a></small></th>
+        <td>{{ item }}
+            - <small><a href="/update_keyword/{{ item.id }}">edit</a></small>
+            <small><a href="delete_keyword/{{ item.id }}">delete</a></small>
+        </td>
         {% for adtext in adtexts %}
         <td>{{ adtext.adtext_headline_1 }} - <small><a href="/update_adtext/{{ adtext.id }}">edit</a></small><br />
             {{ adtext.adtext_headline_2 }}<br />
