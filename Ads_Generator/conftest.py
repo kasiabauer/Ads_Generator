@@ -53,10 +53,12 @@ def adtexts(adgroups):
 def adtext_templates(campaigns):
     lst = []
     for campaign in campaigns:
-        lst.append(AdTextTemplate.objects.create(
+        x = AdTextTemplate.objects.create(
             adtext_template_headline_1='test template headline1',
             adtext_template_headline_2='test template headline2',
             adtext_template_description_1='test template description 1',
-            adtext_template_description_2='test template description 2',))
+            adtext_template_description_2='test template description 2',
+            )
+        x.campaign.add(campaign)
+        lst.append(x)
     return lst
-

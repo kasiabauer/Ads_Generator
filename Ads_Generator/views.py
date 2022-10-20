@@ -26,8 +26,6 @@ class CampaignsListView(ListView):
         context['headline'] = 'Campaigns'
         context['button'] = 'Add Campaign'
         context['urls'] = 'campaign'
-        adtext_template_context = AdTextTemplate.objects.all
-        context['adtextstemplate'] = adtext_template_context
         return context
 
 
@@ -188,6 +186,15 @@ class UpdateAdTextTemplateView(UpdateView):
     success_url = reverse_lazy('campaigns')
 
 
+class AdTextTemplateDeleteView(DeleteView):
+    model = AdTextTemplate
+    template_name = 'item_confirm_delete.html'
+
+    def get_success_url(self):
+        success_url = reverse('campaigns')
+        return success_url
+
+
 class CreateAdTextView(View):
 
     def get(self, request):
@@ -206,7 +213,6 @@ class UpdateAdTextView(UpdateView):
     model = AdText
     form_class = AdTextUpdateForm
     template_name = 'form_update.html'
-    # success_url = reverse_lazy('campaigns')
 
     def get_success_url(self):
         success_url = reverse('keyword_list', args=(self.object.adgroup.id, ))

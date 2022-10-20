@@ -247,7 +247,7 @@ def test_017_adtext_template_post_update_view_logged_user(client, users, campaig
         'adtext_template_headline_2': 'test template headline2',
         'adtext_template_description_1': 'test template description 1',
         'adtext_template_description_2': 'test template description 2',
-        'campaign': campaign.id
+        'campaign': campaign
     }
     response = client.post(url, data)
     assert response.status_code == 302
@@ -312,3 +312,16 @@ def test_021_delete_adtext_post_logged_user(client, users, adtexts, adgroups):
     assert response.url == reverse('keyword_list', args=(adgroup.id, ))
     assert len(adtexts) == 10
     assert AdText.objects.all().count() == 9
+
+
+@pytest.mark.django_db
+def test_022_delete_adtext_template_post_logged_user(client, users, adtext_templates):
+    adtext_template = adtext_templates[0]
+    url = reverse('delete_template', args=(adtext_template.id, ))
+    user = users[0]
+    client.force_login(user)
+    response = client.post(url)
+    assert response.status_code == 302
+    assert response.url == reverse('campaigns')
+    assert len(adtext_templates) == 10
+    assert AdTextTemplate.objects.all().count() == 9

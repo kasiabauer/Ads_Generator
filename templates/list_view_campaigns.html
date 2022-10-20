@@ -7,11 +7,15 @@
         <li class="list-group-item list-group-item-action">
             <a href="/{{ urls }}/{{ item.id }}/">{{ item }}</a>
             - <small><a href="/update_{{ urls }}/{{ item.id }}">edit</a></small>
-            {%  for template in adtextstemplate %}
-                <small><a href="/update_adtext_template/{{ template.id }}">template</a></small>
-                {% endfor %}
                 <small><a href="/delete_{{ urls }}/{{ item.id }}/">delete</a></small>
+        {% for template in item.adtexttemplate_set.all %}
+                 <small><a href="/update_adtext_template/{{ template.id }}">template</a> </small>
+                 <small><a href="/delete_adtext_template/{{ template.id }}">delete template</a> </small>
+            {% empty %}
+            <small>(no template <a href="/add_adtext_template/">add template</a>)</small>
+        {% endfor %}
         </li>
     {% endfor %}
+
     </ul>
 {% endblock %}

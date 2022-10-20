@@ -46,5 +46,5 @@ class AdTextTemplate(models.Model):
     campaign = models.ManyToManyField(Campaign, blank=True)
 
     def __str__(self):
-        return f'{self.pk, self.adtext_template_headline_1}'
+        return f'Template: {self.pk}'
 
