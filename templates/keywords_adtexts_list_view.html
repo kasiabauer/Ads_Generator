@@ -16,14 +16,22 @@
             - <small><a href="update_keyword/{{ item.id }}">edit</a></small>
             <small><a href="delete_keyword/{{ item.id }}">delete</a></small>
         </td>
-        {% for adtext in adtexts %}
-        <td>{{ adtext.adtext_headline_1 }} -
-            <small><a href="update_adtext/{{ adtext.id }}">edit</a></small><br />
-            <small><a href="delete_adtext/{{ adtext.id }}">delete</a></small><br />
-            {{ adtext.adtext_headline_2 }}<br />
-            {{ adtext.adtext_description_1 }}<br />
-            {{ adtext.adtext_description_1 }}</td>
-    {% endfor %}
+{#        {% for adtext in adtexts %}#}
+{#        <td>{{ adtext.adtext_headline_1 }} -#}
+{#            <small><a href="update_adtext/{{ adtext.id }}">edit</a></small>#}
+{#            <small><a href="delete_adtext/{{ adtext.id }}">delete</a></small><br />#}
+{#            {{ adtext.adtext_headline_2 }}<br />#}
+{#            {{ adtext.adtext_description_1 }}<br />#}
+{#            {{ adtext.adtext_description_1 }}</td>#}
+{#        {% endfor %}#}
+        {% for adtext2 in item.adgroup.adtext_set.all %}
+        <td>{{ adtext2.adtext_headline_1 }} -
+            <small><a href="update_adtext/{{ adtext2.id }}">edit</a></small>
+            <small><a href="delete_adtext/{{ adtext2.id }}">delete</a></small><br />
+            {{ adtext2.adtext_headline_2 }}<br />
+            {{ adtext2.adtext_description_1 }}<br />
+            {{ adtext2.adtext_description_1 }}</td>
+        {% endfor %}
     </tr>
     {% endfor %}
   </tbody>

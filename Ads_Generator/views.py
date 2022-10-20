@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
@@ -17,7 +18,9 @@ class IndexView(View):
         return render(request, 'base.html')
 
 
-class CampaignsListView(ListView):
+class CampaignsListView(PermissionRequiredMixin, ListView):
+    permission_required = ('Ads_Generator.view_campaign')
+    login_url = '/login/'
     model = Campaign
     template_name = 'list_view_campaigns.html'
 
@@ -63,7 +66,8 @@ class KeywordsAdTextsListView(ListView):
         return context
 
 
-class CreateCampaignView(View):
+class CreateCampaignView(LoginRequiredMixin, View):
+    login_url = '/login/'
 
     def get(self, request):
         form = CampaignModelForm()
@@ -93,6 +97,7 @@ class CampaignDelete(DeleteView):
 
 
 class CreateAdgroupView(View):
+    login_url = '/login/'
 
     def get(self, request, campaign_id):
         form = AdgroupModelForm
@@ -131,7 +136,8 @@ class AdgroupDeleteView(DeleteView):
         return success_url
 
 
-class CreateKeywordView(View):
+class CreateKeywordView(LoginRequiredMixin, View):
+    login_url = '/login/'
 
     def get(self, request, adgroup_id):
         form = KeywordModelForm
@@ -144,7 +150,6 @@ class CreateKeywordView(View):
             success_url = reverse('keyword_list', args=(adgroup_id, ))
             return redirect(success_url)
         return render(request, 'form_item.html', {'form': form, 'headline': 'Add Keyword'})
-
 
 class UpdateKeywordView(UpdateView):
     model = Keyword
@@ -165,7 +170,8 @@ class KeywordDeleteView(DeleteView):
         return success_url
 
 
-class CreateAdTextTemplateView(View):
+class CreateAdTextTemplateView(LoginRequiredMixin, View):
+    login_url = '/login/'
 
     def get(self, request):
         form = AdTextTemplateForm
@@ -195,7 +201,8 @@ class AdTextTemplateDeleteView(DeleteView):
         return success_url
 
 
-class CreateAdTextView(View):
+class CreateAdTextView(LoginRequiredMixin, View):
+    login_url = '/login/'
 
     def get(self, request):
         form = AdTextForm
