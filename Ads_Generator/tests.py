@@ -20,7 +20,7 @@ def test_002_index_view(client):
 
 # 2nd test for index view
 @pytest.mark.django_db
-def test_23_index_view_logged_user(client, users):
+def test_023_index_view_logged_user(client, users):
     url = reverse('index')
     user = users[0]
     client.force_login(user)
@@ -29,10 +29,12 @@ def test_23_index_view_logged_user(client, users):
 
 
 # 1st test for add campaign view
-def test_003_add_campaign_not_logged_user(client):
+def test_003_add_campaign_without_login(client):
     url = reverse('add_campaign')
     response = client.get(url)
     assert response.status_code == 302
+    url_redirect = reverse('login')
+    assert response.url.startswith(url_redirect)
 
 
 # 2nd test for add campaign view
@@ -93,7 +95,7 @@ def test_006_add_adgroup_post_logged_user(client, campaigns, users):
 
 # 2nd test for add adgroup view
 @pytest.mark.django_db
-def test_024_add_adgroup_post(client, campaigns, users):
+def test_024_add_adgroup_post_without_login(client, campaigns, users):
     campaign = campaigns[0]
     url = reverse('add_adgroup', args=(campaign.id,))
     adgroup_data = {
@@ -125,7 +127,7 @@ def test_007_add_keyword_post_logged_user(client, adgroups, users):
 
 # 2nd test for add keyword view
 @pytest.mark.django_db
-def test_024_add_keyword_get_logged_user(client, adgroups, users):
+def test_025_add_keyword_get_logged_user(client, adgroups, users):
     adgroup = adgroups[0]
     url = reverse('add_keyword', args=(adgroup.id, ))
     user = users[0]
@@ -156,7 +158,7 @@ def test_008_add_adtext_template_post_logged_user(client, campaigns, users):
 
 # 2nd test for add template view
 @pytest.mark.django_db
-def test_025_add_adtext_template_get_logged_user(client, users):
+def test_026_add_adtext_template_get_logged_user(client, users):
     url = reverse('add_adtext_template')
     user = users[0]
     client.force_login(user)
@@ -197,6 +199,17 @@ def test_011_adgroup_list_view_logged_user(client, campaigns, users, adgroups):
     assert response.context['object_list'].count() == len(adgroup_list)
 
 
+# 2nd test for adgroup list view
+@pytest.mark.django_db
+def test_027_adgroup_list_view_without_login(client, campaigns, users, adgroups):
+    campaign = campaigns[0]
+    url = reverse('adgroup_list', args=(campaign.id, ))
+    response = client.get(url)
+    adgroup_list = AdGroup.objects.filter(campaign=campaign.id)
+    assert response.status_code == 200
+    assert response.context['object_list'].count() == len(adgroup_list)
+
+
 # 1st test for keywords & adtexts list view
 @pytest.mark.django_db
 def test_012_keywords_adtexts_list_view_logged_user(client, keywords, adgroups, users):
@@ -210,9 +223,20 @@ def test_012_keywords_adtexts_list_view_logged_user(client, keywords, adgroups, 
     assert response.context['object_list'].count() == len(keyword_list)
 
 
+# 2nd test for keywords & adtexts list view
+@pytest.mark.django_db
+def test_030_keywords_adtexts_list_view_without_login(client, keywords, adgroups):
+    adgroup = adgroups[0]
+    url = reverse('keyword_list', args=(adgroup.id, ))
+    response = client.get(url)
+    keyword_list = Keyword.objects.filter(adgroup=adgroup.id)
+    assert response.status_code == 200
+    assert response.context['object_list'].count() == len(keyword_list)
+
+
 # 1st test for campaign update view
 @pytest.mark.django_db
-def test_013_campaign_post_update_view_logged_user(client, campaigns, users):
+def test_013_campaign_update_view_post_logged_user(client, campaigns, users):
     campaign = campaigns[0]
     url = reverse('update_campaign', args=(campaign.id, ))
     user = users[0]
@@ -226,9 +250,18 @@ def test_013_campaign_post_update_view_logged_user(client, campaigns, users):
     Campaign.objects.get(campaign_name=data['campaign_name'])
 
 
+# 2nd test for campaign update view
+@pytest.mark.django_db
+def test_034_campaign_update_view_get_without_login(client, campaigns, users):
+    campaign = campaigns[0]
+    url = reverse('update_campaign', args=(campaign.id, ))
+    response = client.get(url)
+    assert response.status_code == 200
+
+
 # 1st test for adgroup update view
 @pytest.mark.django_db
-def test_014_adgroup_post_update_view_logged_user(client, campaigns, users, adgroups):
+def test_014_adgroup_update_view_post_logged_user(client, campaigns, users, adgroups):
     campaign = campaigns[0]
     adgroup = adgroups[0]
     url = reverse('update_adgroup', args=(adgroup.id, ))
@@ -243,9 +276,19 @@ def test_014_adgroup_post_update_view_logged_user(client, campaigns, users, adgr
     AdGroup.objects.get(adgroup_name=data['adgroup_name'])
 
 
+# 2nd test for adgroup update view
+@pytest.mark.django_db
+def test_033_adgroup_update_view_get_without_login(client, campaigns, adgroups):
+    campaign = campaigns[0]
+    adgroup = adgroups[0]
+    url = reverse('update_adgroup', args=(adgroup.id, ))
+    response = client.get(url)
+    assert response.status_code == 200
+
+
 # 1st test for keyword update view
 @pytest.mark.django_db
-def test_015_keyword_post_update_view_logged_user(client, keywords, users, adgroups):
+def test_015_keyword_update_view_post_logged_user(client, keywords, users, adgroups):
     keyword = keywords[0]
     adgroup = adgroups[0]
     url = reverse('update_keyword', args=(keyword.id, adgroup.id,  ))
@@ -260,9 +303,19 @@ def test_015_keyword_post_update_view_logged_user(client, keywords, users, adgro
     Keyword.objects.get(keyword=data['keyword'])
 
 
+# 2nd test for keyword update view
+@pytest.mark.django_db
+def test_035_keyword_update_view_get_without_login(client, keywords, adgroups):
+    keyword = keywords[0]
+    adgroup = adgroups[0]
+    url = reverse('update_keyword', args=(keyword.id, adgroup.id,  ))
+    response = client.get(url)
+    assert response.status_code == 200
+
+
 # 1st test for adtext update view
 @pytest.mark.django_db
-def test_016_adtext_post_update_view_logged_user(client, users, adgroups, adtexts):
+def test_016_adtext_update_view_post_logged_user(client, users, adgroups, adtexts):
     adgroup = adgroups[0]
     adtext = adtexts[0]
     url = reverse('update_adtext', args=(adtext.id, adgroup.id, ))
@@ -280,9 +333,71 @@ def test_016_adtext_post_update_view_logged_user(client, users, adgroups, adtext
     AdText.objects.filter(adgroup=adgroup.id, adtext_headline_1=data['adtext_headline_1'])
 
 
+# 2nd test for adtext update view
+@pytest.mark.django_db
+def test_036_adtext_update_view_get_without_login(client, adgroups, adtexts):
+    adgroup = adgroups[0]
+    adtext = adtexts[0]
+    url = reverse('update_adtext', args=(adtext.id, adgroup.id, ))
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+
+# 1st test for login
+@pytest.mark.django_db
+def test_039_login_view_get_without_login(client):
+    url = reverse('login')
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+# 2nd test for login
+@pytest.mark.django_db
+def test_040_login_view_get_logged_user(client, user):
+    url = reverse('login')
+    client.force_login(user)
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+# 1st test for register
+@pytest.mark.django_db
+def test_041_register_view_get_without_login(client):
+    url = reverse('register')
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+# 2nd test for register
+@pytest.mark.django_db
+def test_042_register_view_get_logged_user(client, user):
+    url = reverse('register')
+    client.force_login(user)
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+# 1st test for logout
+@pytest.mark.django_db
+def test_043_logout_view_get_without_login(client):
+    url = reverse('logout')
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+# 2nd test for logout
+@pytest.mark.django_db
+def test_044_logout_view_get_logged_user(client, user):
+    url = reverse('logout')
+    client.force_login(user)
+    response = client.get(url)
+    assert response.status_code == 200
+
+
 # 1st test for adtext template update view
 @pytest.mark.django_db
-def test_017_adtext_template_post_update_view_logged_user(client, users, campaigns, adtext_templates):
+def test_017_adtext_template_update_view_post_logged_user(client, users, campaigns, adtext_templates):
     campaign = campaigns[0]
     adtext_template = adtext_templates[0]
     url = reverse('update_adtext_template', args=(adtext_template.id, ))
@@ -300,6 +415,15 @@ def test_017_adtext_template_post_update_view_logged_user(client, users, campaig
     AdTextTemplate.objects.filter(campaign=campaign.id, adtext_template_headline_1=data['adtext_template_headline_1'])
 
 
+# 2nd test for adtext template update view
+@pytest.mark.django_db
+def test_037_adtext_template_update_view_get_without_login(client, adtext_templates):
+    adtext_template = adtext_templates[0]
+    url = reverse('update_adtext_template', args=(adtext_template.id, ))
+    response = client.get(url)
+    assert response.status_code == 200
+
+
 # 1st test for delete campaign view
 @pytest.mark.django_db
 def test_018_delete_campaign_post_logged_user(client, users, campaigns):
@@ -313,6 +437,15 @@ def test_018_delete_campaign_post_logged_user(client, users, campaigns):
     assert response.url == reverse('campaigns')
     assert len(campaigns) == 10
     assert Campaign.objects.all().count() == 9
+
+
+# 2nd test for delete campaign view
+@pytest.mark.django_db
+def test_038_delete_campaign_get_without_login(client, campaigns):
+    campaign = campaigns[0]
+    url = reverse('delete_campaign', args=(campaign.id, ))
+    response = client.get(url)
+    assert response.status_code == 200
 
 
 # 1st test for delete adgroup view
@@ -330,6 +463,16 @@ def test_019_delete_adgroup_post_logged_user(client, users, campaigns, adgroups)
     assert AdGroup.objects.all().count() == 9
 
 
+# 2nd test for delete adgroup view
+@pytest.mark.django_db
+def test_031_delete_adgroup_get_without_login(client, campaigns, adgroups):
+    campaign = campaigns[0]
+    adgroup = adgroups[0]
+    url = reverse('delete_adgroup', args=(adgroup.id, campaign.id, ))
+    response = client.get(url)
+    assert response.status_code == 200
+
+
 # 1st test for delete keyword view
 @pytest.mark.django_db
 def test_020_delete_keyword_post_logged_user(client, users, keywords, adgroups):
@@ -343,6 +486,16 @@ def test_020_delete_keyword_post_logged_user(client, users, keywords, adgroups):
     assert response.url == reverse('keyword_list', args=(adgroup.id, ))
     assert len(keywords) == 10
     assert Keyword.objects.all().count() == 9
+
+
+# 2nd test for delete keyword view
+@pytest.mark.django_db
+def test_029_delete_keyword_get_without_login(client, keywords, adgroups):
+    keyword = keywords[0]
+    adgroup = adgroups[0]
+    url = reverse('delete_keyword', args=(adgroup.id, keyword.id, ))
+    response = client.get(url)
+    assert response.status_code == 200
 
 
 # 1st test for delete adtext view
@@ -360,6 +513,17 @@ def test_021_delete_adtext_post_logged_user(client, users, adtexts, adgroups):
     assert AdText.objects.all().count() == 9
 
 
+# 2nd test for delete adtext view
+@pytest.mark.django_db
+def test_028_delete_adtext_get_without_login(client, adtexts, adgroups):
+    adtext = adtexts[0]
+    adgroup = adgroups[0]
+    url = reverse('delete_adtext', args=(adgroup.id, adtext.id, ))
+    response = client.get(url)
+    assert response.status_code == 200
+
+
+# 1st test for delete adtext template view
 @pytest.mark.django_db
 def test_022_delete_adtext_template_post_logged_user(client, users, adtext_templates):
     adtext_template = adtext_templates[0]
@@ -373,3 +537,10 @@ def test_022_delete_adtext_template_post_logged_user(client, users, adtext_templ
     assert AdTextTemplate.objects.all().count() == 9
 
 
+# 2nd test for delete adtext template view
+@pytest.mark.django_db
+def test_032_delete_adtext_template_get_without_login(client, adtext_templates):
+    adtext_template = adtext_templates[0]
+    url = reverse('delete_template', args=(adtext_template.id, ))
+    response = client.get(url)
+    assert response.status_code == 200

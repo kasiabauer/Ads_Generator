@@ -14,7 +14,7 @@ def users():
 
 @pytest.fixture
 def user():
-    return User.objects.create(username='test user')
+    return User.objects.create(username='test user', password='TestThis00!')
 
 
 @pytest.fixture
