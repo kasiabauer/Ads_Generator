@@ -5,6 +5,7 @@
     <div class="form-group w-50 mt-2">
         {% csrf_token %}
         {{ form.as_div}}
+        <span>No account? <a href="{% url 'register' %}">Register</a></span>
     <input type="submit" class="btn btn-primary">
     </div>
     </form>

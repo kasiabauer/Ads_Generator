@@ -250,7 +250,7 @@ class RegisterUser(View):
             u.username = un
             u.set_password(password)
             u.save()
-            return redirect('/')
+            return redirect('/login')
         return render(request, 'form.html', {'form': form})
 
 
@@ -258,7 +258,7 @@ class LoginUser(View):
 
     def get(self, request):
         form = UserLoginForm()
-        return render(request, 'form.html', {'form': form, 'headline': 'Login'})
+        return render(request, 'form-login.html', {'form': form, 'headline': 'Login'})
 
     def post(self, request):
         form = UserLoginForm(request.POST)
@@ -267,7 +267,7 @@ class LoginUser(View):
             password = form.cleaned_data['password']
             user = authenticate(username=username, password=password)
             if user is not None:
-                url = request.GET.get('next', '/')
+                url = request.GET.get('next', '/campaigns')
                 login(request, user)
         return redirect(url)
 

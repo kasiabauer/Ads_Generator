@@ -24,13 +24,13 @@ AdText_widgets = {
 
 
 class UserCreateForm(forms.ModelForm):
-    password1 = forms.CharField(max_length=128, widget=forms.PasswordInput, label='Password')
-    password2 = forms.CharField(max_length=128, widget=forms.PasswordInput, label='Repeat Password')
+    username = forms.CharField(max_length=128, widget=forms.TextInput(attrs={'class': 'form-control'}), label='Username')
+    password1 = forms.CharField(max_length=128, widget=forms.PasswordInput(attrs={'class': 'form-control'}), label='Password')
+    password2 = forms.CharField(max_length=128, widget=forms.PasswordInput(attrs={'class': 'form-control mb-3'}), label='Repeat Password')
 
     class Meta:
         model = User
         fields = ['username']
-
 
     def clean(self):
         data = super().clean()
@@ -41,8 +41,8 @@ class UserCreateForm(forms.ModelForm):
 
 
 class UserLoginForm(forms.Form):
-    username = forms.CharField(max_length=128)
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(max_length=128, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control mb-3'}))
 
 
 class CampaignModelForm(forms.ModelForm):
