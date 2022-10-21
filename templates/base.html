@@ -15,25 +15,38 @@
     {% include 'nav.html' %}
     {{ msg }}
     {% block content %}
-    <h1>Index</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean pellentesque non lectus ut rhoncus. Donec quis
-        sapien mollis, congue lectus eget, ultricies metus. Ut pretium felis ac erat molestie pulvinar. Phasellus eget
-        est id felis tincidunt sollicitudin vel sit amet odio. Integer quis metus dignissim, bibendum dolor at, finibus
-        ante. Aliquam vel dui quis neque pretium dictum a ac massa. Etiam varius libero a felis interdum, lacinia
-        pharetra lacus aliquet. Etiam lobortis, quam et vulputate efficitur, velit ipsum tempor felis, in vestibulum
-        tortor dolor et lectus. Praesent faucibus ullamcorper pulvinar. Vestibulum vel porttitor odio. Nam aliquam
-        eu ipsum in blandit.
-    </p>
+    <h1>Plan your campaign <small class="text-muted">like a pro!</small></h1>
+        {% load static %}
+        <p class="lead m-10">
+        Designing scalable campaign for the future is key. It's exciting at the beginning but turns to hell, fast.
+        Plan your campaign with ease and save your precious time.
+        </p>
+        <button onclick="location.href='register/'" type="button" class="btn btn-dark btn-l">
+            Register Free Account Now!</button>
 
-    <p>Quisque vulputate augue euismod ante luctus, non scelerisque tellus rutrum. Nam lorem dui, congue ac tortor id,
-        semper accumsan magna. Mauris nunc lorem, iaculis sed mauris et, porttitor volutpat dui. Cras at leo sed justo
-        accumsan fringilla. Etiam vel metus nec ex blandit sollicitudin. Aenean id tempus lorem. Sed suscipit mollis
-        sodales. Etiam dictum lacinia lectus, ut gravida lacus tincidunt ac. Mauris a lorem tristique, dictum orci a,
-        ultrices nulla. Aliquam accumsan, metus vitae commodo semper, lectus ex posuere justo, sit amet pulvinar diam
-        ipsum non sem. Sed tempor ex in diam euismod porta. Praesent luctus nisi in tristique congue. Mauris auctor in
-        lectus posuere commodo. Ut feugiat metus nisl, vitae tempus leo bibendum ut. Donec volutpat, lectus cursus
-        semper posuere, ante ipsum feugiat sapien, sit amet placerat tellus augue nec tortor. Ut laoreet molestie ex,
-        ac ultrices turpis condimentum sit amet.</p>
+        <img src="{% static 'home-page-intro.png' %}" class="img-fluid rounded" alt="My image">
+
+    <p>Over the last decade, PPC advertising has become essential for almost every business, regardless of size or
+        industry. For as little as a couple hundred dollars a month, even the smallest of small businesses and startups
+        can jump into the digital advertising game and make an impact on their bottom line.</p>
+    <p>If you’re a small business and just getting into PPC advertising then you’re likely going to be building and
+        managing your Google Ads account on your own for a while. Getting up and running may seem like a daunting task.
+        And well, it kinda is…That’s why you’re here, right?</p>
+    <p>But fear not! With this step-by-step tool you will be up and running in just a few hours.</p>
+
+        <img src="{% static 'plan-campaign.png' %}" class="img-fluid rounded mx-auto d-block w-50" alt="My image">
+
+    <p class="mt-3"><strong>Headlines</strong> – Google allows you to show up to three headlines with your ad. You want to take advantage of all
+        three. Each headline allows for only 30 characters, so you’ll have to be creative and concise about
+        communicating your message. Your headlines should address the product or service you are promoting and include
+        a call to action (what you want the customer to do once they get to your website) at the very least.</p>
+                        <button onclick="location.href='register/'" type="button" class="btn btn-dark btn-l mx-auto d-block">
+                    Register Free Account, Today!</button>
+    <p class="mt-3"><strong>Display Path</strong> – The display path is part of the URL that is actually shown with your ad. This path does not have
+        to match the Final URL. Use this field to give customers an idea of what page they will reach when they click
+        on your ad. Using your keyword here (or the product or service you are promoting) is a good practice./<p>
+    <p><strong>Descriptions</strong> – You have the ability to add up to two descriptions of 90 characters each. Here you can really
+        go into more depth about your offering and your business.</p>
     {% endblock %}
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
