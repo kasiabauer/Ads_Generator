@@ -18,9 +18,9 @@ class IndexView(View):
         return render(request, 'base.html')
 
 
-class CampaignsListView(PermissionRequiredMixin, ListView):
-    permission_required = ('Ads_Generator.view_campaign')
-    login_url = '/login/'
+class CampaignsListView(ListView):
+    # permission_required = ('Ads_Generator.view_campaign')
+    # login_url = '/login/'
     model = Campaign
     template_name = 'list_view_campaigns.html'
 
@@ -96,7 +96,7 @@ class CampaignDelete(DeleteView):
     template_name = 'item_confirm_delete.html'
 
 
-class CreateAdgroupView(View):
+class CreateAdgroupView(LoginRequiredMixin, View):
     login_url = '/login/'
 
     def get(self, request, campaign_id):

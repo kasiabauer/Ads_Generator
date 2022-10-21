@@ -13,6 +13,11 @@ def users():
 
 
 @pytest.fixture
+def user():
+    return User.objects.create(username='test user')
+
+
+@pytest.fixture
 def campaigns(users):
     lst = []
     for user in users:

@@ -18,25 +18,24 @@ def test_002_index_view(client):
     assert response.status_code == 200
 
 
+# 2nd test for index view
+@pytest.mark.django_db
+def test_23_index_view_logged_user(client, users):
+    url = reverse('index')
+    user = users[0]
+    client.force_login(user)
+    response = client.get(url)
+    assert response.status_code == 200
+
+
 # 1st test for add campaign view
-def test_003_add_campaign(client):
+def test_003_add_campaign_not_logged_user(client):
     url = reverse('add_campaign')
     response = client.get(url)
-    assert response.status_code == 200
+    assert response.status_code == 302
 
 
-# 1st test for campaign list view
-@pytest.mark.django_db
-def test_004_campaign_list_view(client, campaigns):
-    url = reverse('campaigns')
-    response = client.get(url)
-    assert response.status_code == 200
-    assert response.context['object_list'].count() == len(campaigns)
-    for camp in campaigns:
-        assert camp in response.context['object_list']
-
-
-# 2st test for add campaign view
+# 2nd test for add campaign view
 @pytest.mark.django_db
 def test_005_add_campaign_post_logged_user(client, users):
     url = reverse('add_campaign')
@@ -51,6 +50,28 @@ def test_005_add_campaign_post_logged_user(client, users):
     assert response.status_code == 302
     assert response.url == reverse('campaigns')
     Campaign.objects.get(**campaign_data)
+
+
+# 1st test for campaign list view
+@pytest.mark.django_db
+def test_004_campaign_list_view(client, campaigns):
+    url = reverse('campaigns')
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.context['object_list'].count() == len(campaigns)
+    for camp in campaigns:
+        assert camp in response.context['object_list']
+
+
+# 2nd test for campaign list view
+@pytest.mark.django_db
+def test_010_campaigns_list_view_logged_user(client, campaigns, users):
+    url = reverse('campaigns')
+    user = users[0]
+    client.force_login(user)
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.context['object_list'].count() == len(campaigns)
 
 
 # 1st test for add adgroup view
@@ -70,6 +91,21 @@ def test_006_add_adgroup_post_logged_user(client, campaigns, users):
     AdGroup.objects.get(**adgroup_data)
 
 
+# 2nd test for add adgroup view
+@pytest.mark.django_db
+def test_024_add_adgroup_post(client, campaigns, users):
+    campaign = campaigns[0]
+    url = reverse('add_adgroup', args=(campaign.id,))
+    adgroup_data = {
+        'adgroup_name': 'adgroup1',
+        'campaign': campaign.id,
+    }
+    response = client.post(url, adgroup_data)
+    assert response.status_code == 302
+    url_redirect = reverse('login')
+    assert response.url.startswith(url_redirect)
+
+
 # 1st test for add keyword view
 @pytest.mark.django_db
 def test_007_add_keyword_post_logged_user(client, adgroups, users):
@@ -85,6 +121,17 @@ def test_007_add_keyword_post_logged_user(client, adgroups, users):
     assert response.status_code == 302
     assert response.url == reverse('keyword_list', args=(adgroup.id, ))
     Keyword.objects.get(**keyword_data)
+
+
+# 2nd test for add keyword view
+@pytest.mark.django_db
+def test_024_add_keyword_get_logged_user(client, adgroups, users):
+    adgroup = adgroups[0]
+    url = reverse('add_keyword', args=(adgroup.id, ))
+    user = users[0]
+    client.force_login(user)
+    response = client.get(url)
+    assert response.status_code == 200
 
 
 # 1st test for add template view
@@ -107,6 +154,16 @@ def test_008_add_adtext_template_post_logged_user(client, campaigns, users):
     AdTextTemplate.objects.get(**adtext_template_data)
 
 
+# 2nd test for add template view
+@pytest.mark.django_db
+def test_025_add_adtext_template_get_logged_user(client, users):
+    url = reverse('add_adtext_template')
+    user = users[0]
+    client.force_login(user)
+    response = client.get(url)
+    assert response.status_code == 200
+
+
 # 1st test for add adtext view
 @pytest.mark.django_db
 def test_009_add_adtext_post_logged_user(client, adgroups, users):
@@ -125,17 +182,6 @@ def test_009_add_adtext_post_logged_user(client, adgroups, users):
     assert response.status_code == 302
     assert response.url == reverse('campaigns')
     AdText.objects.get(**adtext_data)
-
-
-# 1st test for campaign list view
-@pytest.mark.django_db
-def test_010_campaigns_list_view_logged_user(client, campaigns, users):
-    url = reverse('campaigns')
-    user = users[0]
-    client.force_login(user)
-    response = client.get(url)
-    assert response.status_code == 200
-    assert response.context['object_list'].count() == len(campaigns)
 
 
 # 1st test for adgroup list view
@@ -325,3 +371,5 @@ def test_022_delete_adtext_template_post_logged_user(client, users, adtext_templ
     assert response.url == reverse('campaigns')
     assert len(adtext_templates) == 10
     assert AdTextTemplate.objects.all().count() == 9
+
+
