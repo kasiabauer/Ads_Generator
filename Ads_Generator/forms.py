@@ -5,6 +5,24 @@ from django import forms
 from Ads_Generator.models import Campaign, AdGroup, Keyword, AdTextTemplate, AdText
 
 
+AdTextTemplate_widgets = {
+            'campaign': forms.CheckboxSelectMultiple(attrs={'class': 'm-2'}),
+            'adtext_template_headline_1': forms.TextInput(attrs={'class': 'form-control mb-3'}),
+            'adtext_template_headline_2': forms.TextInput(attrs={'class': 'form-control mb-3'}),
+            'adtext_template_description_1': forms.TextInput(attrs={'class': 'form-control mb-3'}),
+            'adtext_template_description_2': forms.TextInput(attrs={'class': 'form-control mb-3'}),
+        }
+
+
+AdText_widgets = {
+            'adgroup': forms.Select(attrs={'class': 'form-control mt-2'}),
+            'adtext_headline_1': forms.TextInput(attrs={'class': 'form-control mb-3'}),
+            'adtext_headline_2': forms.TextInput(attrs={'class': 'form-control mb-3'}),
+            'adtext_description_1': forms.TextInput(attrs={'class': 'form-control mb-3'}),
+            'adtext_description_2': forms.TextInput(attrs={'class': 'form-control mb-3'}),
+        }
+
+
 class UserCreateForm(forms.ModelForm):
     password1 = forms.CharField(max_length=128, widget=forms.PasswordInput, label='Password')
     password2 = forms.CharField(max_length=128, widget=forms.PasswordInput, label='Repeat Password')
@@ -62,6 +80,10 @@ class AdTextTemplateForm(forms.ModelForm):
     class Meta:
         model = AdTextTemplate
         fields = '__all__'
+        widgets = AdTextTemplate_widgets
+        labels = {
+            'campaign': 'Select Campaign/(s)',
+        }
 
 
 class AdTextTemplateUpdateForm(forms.ModelForm):
@@ -69,6 +91,7 @@ class AdTextTemplateUpdateForm(forms.ModelForm):
     class Meta:
         model = AdTextTemplate
         exclude = ['campaign']
+        widgets = AdTextTemplate_widgets
 
 
 class AdTextForm(forms.ModelForm):
@@ -76,6 +99,10 @@ class AdTextForm(forms.ModelForm):
     class Meta:
         model = AdText
         fields = '__all__'
+        widgets = AdText_widgets
+        labels = {
+            'adgroup': 'Select Adgroup',
+        }
 
 
 class AdTextUpdateForm(forms.ModelForm):
@@ -83,3 +110,4 @@ class AdTextUpdateForm(forms.ModelForm):
     class Meta:
         model = AdText
         exclude = ['adgroup']
+        widgets = AdText_widgets

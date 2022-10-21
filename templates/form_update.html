@@ -2,9 +2,10 @@
 {% block content %}
     <h1>Edit</h1>
     <form method="post">
+      <div class="form-group w-50 mt-2">
             {% csrf_token %}
-            {{ form.as_p}}
-    <input type="submit" value="save changes" class="btn btn-primary">
-
+            {{ form.as_div}}
+    <input type="submit" value="save changes" class="btn btn-primary mt-2">
+    </div>
     </form>
 {% endblock %}
