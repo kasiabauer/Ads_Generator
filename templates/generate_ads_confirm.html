@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{{ headline }}</h1>
+    <div class="alert alert-success mt-3" role="alert">
+    Ad was generated.
+    To see the Ad
+    <a href="/adgroup/{{ url }}">go back</a>
+    </div>
+
+{% endblock %}

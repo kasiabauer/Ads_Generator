@@ -5,8 +5,9 @@
     <table class="table">
   <thead>
     <tr>
-      <th scope="col">Keywords</th>
-      <th scope="col">Adtexts</th>
+      <th scope="col">Keyword</th>
+      <th scope="col">Adtext</th>
+      <th scope="col">Edit Adtext</th>
     </tr>
   </thead>
   <tbody>
@@ -15,6 +16,8 @@
         <td>{{ item }}
             - <small><a href="update_keyword/{{ item.id }}">edit</a></small>
             <small><a href="delete_keyword/{{ item.id }}">delete</a></small>
+            <button onclick="location.href='generate_adtext/'" type="button" class="btn btn-outline-primary ml-2">generate ad</button>
+
         </td>
 {#        {% for adtext in adtexts %}#}
 {#        <td>{{ adtext.adtext_headline_1 }} -#}
@@ -25,12 +28,13 @@
 {#            {{ adtext.adtext_description_1 }}</td>#}
 {#        {% endfor %}#}
         {% for adtext2 in item.adgroup.adtext_set.all %}
-        <td>{{ adtext2.adtext_headline_1 }} -
-            <small><a href="update_adtext/{{ adtext2.id }}">edit</a></small>
-            <small><a href="delete_adtext/{{ adtext2.id }}">delete</a></small><br />
+        <td>{{ adtext2.adtext_headline_1 }}<br/>
             {{ adtext2.adtext_headline_2 }}<br />
             {{ adtext2.adtext_description_1 }}<br />
-            {{ adtext2.adtext_description_1 }}</td>
+            {{ adtext2.adtext_description_2 }}</td>
+        <td>
+            <small><a href="update_adtext/{{ adtext2.id }}">edit</a></small>
+            <small><a href="delete_adtext/{{ adtext2.id }}">delete</a></small><br></td>
         {% endfor %}
     </tr>
     {% endfor %}

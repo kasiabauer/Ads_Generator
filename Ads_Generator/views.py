@@ -280,3 +280,25 @@ class LogoutUser(View):
         logout(request)
         return render(request, 'base.html', {'msg': f'{username} was logged out'})
 
+
+class GenerateAdText(View):
+
+    def get(self, request, adgroup_id):
+        current_adgroup = AdGroup.objects.get(id=adgroup_id)
+        first_keyword = Keyword.objects.get(adgroup=current_adgroup)
+        keyword = first_keyword.keyword
+        campaign_id = current_adgroup.campaign_id
+        template = Campaign.objects.get(pk=campaign_id).adtexttemplate_set.get(campaign=campaign_id)
+        new_headline_1 = template.adtext_template_headline_1.replace('{keyword}', keyword).title()
+        new_headline_2 = template.adtext_template_headline_2.replace('{keyword}', keyword).title()
+        new_description_1 = template.adtext_template_description_1.replace('{keyword}', keyword).title()
+        new_description_2 = template.adtext_template_description_2.replace('{keyword}', keyword).title()
+        new_ad_text = AdText.objects.create(
+            adtext_headline_1=new_headline_1,
+            adtext_headline_2=new_headline_2,
+            adtext_description_1=new_description_1,
+            adtext_description_2=new_description_2,
+            adgroup=current_adgroup
+        )
+        return render(request, 'generate_ads_confirm.html',
+                      {'headline': 'Keyword Generator', 'button': 'go back', 'url': adgroup_id})
