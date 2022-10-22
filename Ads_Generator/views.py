@@ -7,7 +7,7 @@ from django.views import View
 from django.views.generic import ListView, UpdateView, DeleteView
 
 from Ads_Generator.forms import UserCreateForm, UserLoginForm, CampaignModelForm, AdgroupModelForm, KeywordModelForm, \
-    AdTextTemplateForm, AdTextForm, AdgroupModelFormUpdate, KeywordModelFormUpdate, AdTextTemplateUpdateForm, \
+    AdTextTemplateForm, AdTextForm, AdgroupModelFormUpdate, AdTextTemplateUpdateForm, \
     AdTextUpdateForm
 from Ads_Generator.models import Campaign, AdGroup, Keyword, AdText, AdTextTemplate
 
@@ -157,7 +157,7 @@ class CreateKeywordView(LoginRequiredMixin, View):
 
 class UpdateKeywordView(UpdateView):
     model = Keyword
-    form_class = KeywordModelFormUpdate
+    form_class = KeywordModelForm
     template_name = 'form_update.html'
 
     def get_success_url(self):

@@ -49,6 +49,9 @@ class CampaignModelForm(forms.ModelForm):
     class Meta:
         model = Campaign
         exclude = ['user']
+        # widgets = {
+        #     'campaign_name': forms.TextInput(attrs={'class': 'form-control mx-sm-3'}),
+        # }
 
 
 class AdgroupModelForm(forms.ModelForm):
@@ -64,12 +67,6 @@ class AdgroupModelFormUpdate(forms.ModelForm):
 
 
 class KeywordModelForm(forms.ModelForm):
-    class Meta:
-        model = Keyword
-        exclude = ['adgroup']
-
-
-class KeywordModelFormUpdate(forms.ModelForm):
     class Meta:
         model = Keyword
         exclude = ['adgroup']
