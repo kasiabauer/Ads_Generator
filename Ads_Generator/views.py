@@ -146,10 +146,14 @@ class CreateKeywordView(LoginRequiredMixin, View):
     def post(self, request, adgroup_id):
         form = KeywordModelForm(request.POST)
         if form.is_valid():
-            obj = form.save()
+            obj = form.save(commit=False)
+            adgroup = AdGroup.objects.get(id=adgroup_id)
+            obj.adgroup = adgroup
+            obj.save()
             success_url = reverse('keyword_list', args=(adgroup_id, ))
             return redirect(success_url)
         return render(request, 'form_item.html', {'form': form, 'headline': 'Add Keyword'})
+
 
 class UpdateKeywordView(UpdateView):
     model = Keyword
