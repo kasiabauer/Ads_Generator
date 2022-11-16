@@ -41,7 +41,7 @@ urlpatterns = [
     path('campaign/<int:campaign_id>/delete_adgroup/<int:pk>/', views.AdgroupDeleteView.as_view(), name='delete_adgroup'),
     path("adgroup/<int:adgroup_id>/delete_keyword/<int:pk>/", views.KeywordDeleteView.as_view(), name='delete_keyword'),
     path("adgroup/<int:adgroup_id>/delete_adtext/<int:pk>/", views.AdTextDeleteView.as_view(), name='delete_adtext'),
-    path("adgroup/<int:adgroup_id>/generate_adtext/", views.GenerateAdText.as_view(), name='generate_adtext'),
+    path("adgroup/<int:adgroup_id>/<int:keyword_id>/generate_adtext/", views.GenerateAdText.as_view(), name='generate_adtext'),
     path("delete_adtext_template/<int:pk>/", views.AdTextTemplateDeleteView.as_view(), name='delete_template'),
 
 ]

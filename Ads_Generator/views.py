@@ -287,10 +287,10 @@ class LogoutUser(View):
 
 class GenerateAdText(View):
 
-    def get(self, request, adgroup_id):
+    def get(self, request, adgroup_id, keyword_id):
         current_adgroup = AdGroup.objects.get(id=adgroup_id)
-        first_keyword = Keyword.objects.get(adgroup=current_adgroup)
-        keyword = first_keyword.keyword
+        keyword = Keyword.objects.get(id=keyword_id)
+        keyword = keyword.keyword
         campaign_id = current_adgroup.campaign_id
         template = Campaign.objects.get(pk=campaign_id).adtexttemplate_set.get(campaign=campaign_id)
         new_headline_1 = template.adtext_template_headline_1.replace('{keyword}', keyword).title()

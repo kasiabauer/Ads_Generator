@@ -2,42 +2,53 @@
 {% block content %}
     <h1>{{ headline }}</h1>
     <button onclick="location.href='add_{{ urls }}/'" type="button" class="btn btn-primary">{{ button }}</button>
-    <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Keyword</th>
-      <th scope="col">Adtext</th>
-      <th scope="col">Edit Adtext</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for item in object_list %}
-    <tr>
-        <td>{{ item }}
-            - <small><a href="update_keyword/{{ item.id }}">edit</a></small>
-            <small><a href="delete_keyword/{{ item.id }}">delete</a></small>
-            <button onclick="location.href='generate_adtext/'" type="button" class="btn btn-outline-primary ml-2">generate ad</button>
 
-        </td>
-{#        {% for adtext in adtexts %}#}
-{#        <td>{{ adtext.adtext_headline_1 }} -#}
-{#            <small><a href="update_adtext/{{ adtext.id }}">edit</a></small>#}
-{#            <small><a href="delete_adtext/{{ adtext.id }}">delete</a></small><br />#}
-{#            {{ adtext.adtext_headline_2 }}<br />#}
-{#            {{ adtext.adtext_description_1 }}<br />#}
-{#            {{ adtext.adtext_description_1 }}</td>#}
-{#        {% endfor %}#}
-        {% for adtext2 in item.adgroup.adtext_set.all %}
-        <td>{{ adtext2.adtext_headline_1 }}<br/>
-            {{ adtext2.adtext_headline_2 }}<br />
-            {{ adtext2.adtext_description_1 }}<br />
-            {{ adtext2.adtext_description_2 }}</td>
-        <td>
-            <small><a href="update_adtext/{{ adtext2.id }}">edit</a></small>
-            <small><a href="delete_adtext/{{ adtext2.id }}">delete</a></small><br></td>
+    <!-- Keyword Table-->
+    <table class="table mt-4" style="width: 75%">
+      <thead>
+        <tr>
+          <th scope="col" style="width: 50%">Keyword</th>
+          <th scope="col" style="width: 25%">Keyword Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in object_list %}
+            <tr>
+                <td>{{ item }}</td>
+                <td>
+                    <small><a href="update_keyword/{{ item.id }}">edit</a></small>
+                    <small><a href="delete_keyword/{{ item.id }}">delete</a></small>
+                    <button onclick="location.href='{{ item.id }}/generate_adtext/'" type="button" class="btn btn-outline-primary ml-2">generate ad</button>
+                </td>
+            </tr>
         {% endfor %}
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+      </tbody>
+    </table>
+
+    <!-- Ad Table-->
+    <table class="table mt-5" style="width: 75%">
+        <thead >
+            <tr>
+              <th scope="col" style="width: 50%">Adtext</th>
+              <th scope="col" style="width: 25%">Adtext Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for adtext2 in adtexts %}
+                <tr>
+                    <td>{{ adtext2.adtext_headline_1 }}<br/>
+                        {{ adtext2.adtext_headline_2 }}<br />
+                        {{ adtext2.adtext_description_1 }}<br />
+                        {{ adtext2.adtext_description_2 }}
+                    </td>
+                    <td>
+                        <small><a href="update_adtext/{{ adtext2.id }}">edit</a></small>
+                        <small><a href="delete_adtext/{{ adtext2.id }}">delete</a></small><br>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
 {% endblock %}

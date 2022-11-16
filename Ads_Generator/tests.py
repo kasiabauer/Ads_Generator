@@ -550,7 +550,8 @@ def test_032_delete_adtext_template_get_without_login(client, adtext_templates):
 @pytest.mark.django_db
 def test_045_generate_ad_text_view_get_without_login(client, adgroups, keywords, adtext_templates):
     adgroup = adgroups[0]
-    url = reverse('generate_adtext', args=(adgroup.id, ))
+    keyword = keywords[0]
+    url = reverse('generate_adtext', args=(adgroup.id, keyword.id, ))
     response = client.get(url)
     assert response.status_code == 200
 
@@ -559,8 +560,9 @@ def test_045_generate_ad_text_view_get_without_login(client, adgroups, keywords,
 @pytest.mark.django_db
 def test_046_generate_ad_text_view_get_logged_user(client, adgroups, users, keywords, adtext_templates):
     adgroup = adgroups[0]
+    keyword = keywords[0]
     user = users[0]
     client.force_login(user)
-    url = reverse('generate_adtext', args=(adgroup.id, ))
+    url = reverse('generate_adtext', args=(adgroup.id, keyword.id, ))
     response = client.get(url)
     assert response.status_code == 200
