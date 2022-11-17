@@ -13,7 +13,9 @@
     <body class="container-xl">
 
     {% include 'nav.html' %}
-    {{ msg }}
+    {% if alert %}
+    <div class="alert alert-{{ alert }}" role="alert">{{ msg }}</div>
+    {% endif %}
     {% block content %}
     <h1>Plan your campaign <small class="text-muted">like a pro!</small></h1>
         {% load static %}

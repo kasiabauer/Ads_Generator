@@ -566,3 +566,23 @@ def test_046_generate_ad_text_view_get_logged_user(client, adgroups, users, keyw
     url = reverse('generate_adtext', args=(adgroup.id, keyword.id, ))
     response = client.get(url)
     assert response.status_code == 200
+
+
+# 3rd test for add campaign view
+@pytest.mark.django_db
+def test_047_add_campaign_post_logged_user_duplicate_name(client, users):
+    url = reverse('add_campaign')
+    user = users[0]
+    client.force_login(user)
+
+    campaign_data = {
+        'campaign_name': 'test campaign',
+        'user': user
+    }
+    response = client.post(url, campaign_data)
+    assert response.status_code == 302
+    assert response.url == reverse('campaigns')
+    Campaign.objects.get(**campaign_data)
+    response = client.post(url, campaign_data)  # sending post the same data as duplicate
+    assert response.status_code == 200
+    # assert response.url == reverse('add_campaign')  # why this is not working? Ask a mentor

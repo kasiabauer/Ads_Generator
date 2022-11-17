@@ -7,6 +7,11 @@ class Campaign(models.Model):
     campaign_name = models.CharField(max_length=128)  # UNIQUE_TOGETHER (poprzez klasę Meta)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['campaign_name', 'user'], name="user-campaigns")
+        ]
+
     def __str__(self):
         return f'{self.campaign_name}'
 

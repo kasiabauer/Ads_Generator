@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -16,6 +17,17 @@ class IndexView(View):
 
     def get(self, request):
         return render(request, 'base.html')
+
+
+MESSAGES = {
+    'campaign exist': 'Campaign with that name already exists. Try different campaign name.',
+    'logout': 'was logged out successfully.'
+}
+
+ALERTS = [
+    'danger',
+    'success'
+]
 
 
 class CampaignsListView(ListView):
@@ -74,13 +86,23 @@ class CreateCampaignView(LoginRequiredMixin, View):
         return render(request, 'form_item.html', {'form': form, 'headline': 'Add Campaign'})
 
     def post(self, request):
-        form = CampaignModelForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = request.user
-            obj.save()
-            return redirect('campaigns')
-        return render(request, 'form_item.html', {'form': form, 'headline': 'Add Campaign'})
+            form = CampaignModelForm(request.POST)
+            if form.is_valid():
+                obj = form.save(commit=False)
+                obj.user = request.user
+                try:
+                    obj.save()
+                    return redirect('campaigns')
+                except IntegrityError as e:
+                    if 'UNIQUE constraint failed' in e.args[0]:
+                        msg = MESSAGES['campaign exist']
+                        alert = ALERTS[0]
+                        return render(request, 'form_item.html', {'form': form, 'headline': 'Add Campaign',
+                                                                  'msg': msg, 'alert': alert})
+                    else:
+                        return render(request, 'form_item.html', {'form': form, 'headline': 'Add Campaign'})
+
+            return render(request, 'form_item.html', {'form': form, 'headline': 'Add Campaign'})
 
 
 class UpdateCampaignView(UpdateView):
@@ -282,7 +304,8 @@ class LogoutUser(View):
 
         username = request.user.username
         logout(request)
-        return render(request, 'base.html', {'msg': f'{username} was logged out'})
+        msg = MESSAGES['logout']
+        return render(request, 'base.html', {'msg': f'{username} {msg}', 'alert': ALERTS[1]})
 
 
 class GenerateAdText(View):
