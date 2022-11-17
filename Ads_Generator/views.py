@@ -329,3 +329,4 @@ class GenerateAdText(View):
         )
         return render(request, 'generate_ads_confirm.html',
                       {'headline': 'Keyword Generator', 'button': 'go back', 'url': adgroup_id})
+
