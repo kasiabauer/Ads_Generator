@@ -316,10 +316,10 @@ class GenerateAdText(View):
         keyword = keyword.keyword
         campaign_id = current_adgroup.campaign_id
         template = Campaign.objects.get(pk=campaign_id).adtexttemplate_set.get(campaign=campaign_id)
-        new_headline_1 = template.adtext_template_headline_1.replace('{keyword}', keyword).title()
-        new_headline_2 = template.adtext_template_headline_2.replace('{keyword}', keyword).title()
-        new_description_1 = template.adtext_template_description_1.replace('{keyword}', keyword).title()
-        new_description_2 = template.adtext_template_description_2.replace('{keyword}', keyword).title()
+        new_headline_1 = template.adtext_template_headline_1.replace('{keyword}', keyword.title())
+        new_headline_2 = template.adtext_template_headline_2.replace('{keyword}', keyword.title())
+        new_description_1 = template.adtext_template_description_1.replace('{keyword}', keyword.title())
+        new_description_2 = template.adtext_template_description_2.replace('{keyword}', keyword.title())
         new_ad_text = AdText.objects.create(
             adtext_headline_1=new_headline_1,
             adtext_headline_2=new_headline_2,

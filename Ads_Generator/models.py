@@ -33,10 +33,10 @@ class Keyword(models.Model):
 
 
 class AdText(models.Model):
-    adtext_headline_1 = models.CharField(max_length=64)
-    adtext_headline_2 = models.CharField(max_length=64)
-    adtext_description_1 = models.CharField(max_length=128)
-    adtext_description_2 = models.CharField(max_length=128)
+    adtext_headline_1 = models.CharField(max_length=30)
+    adtext_headline_2 = models.CharField(max_length=30)
+    adtext_description_1 = models.CharField(max_length=90)
+    adtext_description_2 = models.CharField(max_length=90)
     adgroup = models.ForeignKey(AdGroup, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -44,10 +44,10 @@ class AdText(models.Model):
 
 
 class AdTextTemplate(models.Model):
-    adtext_template_headline_1 = models.CharField(max_length=64)
-    adtext_template_headline_2 = models.CharField(max_length=64)
-    adtext_template_description_1 = models.CharField(max_length=128)
-    adtext_template_description_2 = models.CharField(max_length=128)
+    adtext_template_headline_1 = models.CharField(max_length=270)
+    adtext_template_headline_2 = models.CharField(max_length=270)
+    adtext_template_description_1 = models.CharField(max_length=810)
+    adtext_template_description_2 = models.CharField(max_length=810)
     campaign = models.ManyToManyField(Campaign, blank=True)
 
     def __str__(self):
