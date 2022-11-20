@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 
@@ -43,11 +44,41 @@ class AdText(models.Model):
         return f'AdText with headline1: {self.adtext_headline_1}'
 
 
+def keyword_occurrence_in_string(value):
+    return value.count('{keyword}')
+
+
+def headline_with_keyword_validation(value):
+    num_of_keywords = keyword_occurrence_in_string(value)
+    headline_char_limit = 30 - num_of_keywords
+    if '{keyword}' in value:
+        num_of_keywords = keyword_occurrence_in_string(value)
+        value_without_keyword = value.replace('{keyword}', '')
+        chars = len(value_without_keyword)
+        if chars > headline_char_limit:
+            raise ValidationError(f'Character limit exceeded by: {chars - headline_char_limit - num_of_keywords}. '
+                                  f'Overall chars: {chars - num_of_keywords} '
+                                  f' ({num_of_keywords} character/(s) reserved for keyword)')
+
+
+def description_with_keyword_validation(value):
+    num_of_keywords = keyword_occurrence_in_string(value)
+    description_char_limit = 90 - num_of_keywords
+    if '{keyword}' in value:
+        value_without_keyword = value.replace('{keyword}', '')
+        chars = len(value_without_keyword)
+        if chars > description_char_limit:
+            raise ValidationError(f'Char limit exceeded '
+                                  f'by: {chars - description_char_limit - num_of_keywords}. '
+                                  f'Overall chars: {chars - num_of_keywords} '
+                                  f'({num_of_keywords} character/(s) reserved for keyword)')
+
+
 class AdTextTemplate(models.Model):
-    adtext_template_headline_1 = models.CharField(max_length=270)
-    adtext_template_headline_2 = models.CharField(max_length=270)
-    adtext_template_description_1 = models.CharField(max_length=810)
-    adtext_template_description_2 = models.CharField(max_length=810)
+    adtext_template_headline_1 = models.CharField(max_length=270, validators=[headline_with_keyword_validation])
+    adtext_template_headline_2 = models.CharField(max_length=270, validators=[headline_with_keyword_validation])
+    adtext_template_description_1 = models.CharField(max_length=810, validators=[description_with_keyword_validation])
+    adtext_template_description_2 = models.CharField(max_length=810, validators=[description_with_keyword_validation])
     campaign = models.ManyToManyField(Campaign, blank=True)
 
     def __str__(self):
