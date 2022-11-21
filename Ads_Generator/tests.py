@@ -1,5 +1,6 @@
 import pytest
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.urls import reverse
 
 from Ads_Generator.models import Campaign, AdGroup, Keyword, AdTextTemplate, AdText
@@ -415,6 +416,8 @@ def test_017_adtext_template_update_view_post_logged_user(client, users, campaig
     AdTextTemplate.objects.filter(campaign=campaign.id, adtext_template_headline_1=data['adtext_template_headline_1'])
 
 
+
+
 # 2nd test for adtext template update view
 @pytest.mark.django_db
 def test_037_adtext_template_update_view_get_without_login(client, adtext_templates):
@@ -586,3 +589,33 @@ def test_047_add_campaign_post_logged_user_duplicate_name(client, users):
     response = client.post(url, campaign_data)  # sending post the same data as duplicate
     assert response.status_code == 200
     # assert response.url == reverse('add_campaign')  # why this is not working? Ask a mentor
+
+
+# 1st test for add template view
+@pytest.mark.django_db
+def test_00XX_add_adtext_template_post_logged_user(client, campaigns, users, adtext_templates):
+    campaign = campaigns[0]
+    url = reverse('add_adtext_template')
+    user = users[0]
+    client.force_login(user)
+    adtext_template_data = {
+        'adtext_template_headline_1': 'test template headline1 that have 41char {keyword}',
+        'adtext_template_headline_2': 'test template headline1 that have 41char',
+        'adtext_template_description_1': 'test template description 1',
+        'adtext_template_description_2': 'test template description 2',
+        'campaign': campaign.id,
+    }
+    response = client.post(url, adtext_template_data)
+    assert response.status_code == 200
+    assert response.assertRaises(ValidationError)
+    assert response.url == reverse('campaigns')
+    AdTextTemplate.objects.get(**adtext_template_data)
+    # https://www.youtube.com/watch?v=HvTvw4EudpY&ab_channel=CodingEntrepreneurs < try this
+
+
+@pytest.mark.django_db
+def test_adtext_template_headline_validation_error_(adtext_templates_headline_exceed_char_limit):
+    adtext_template = adtext_templates_headline_exceed_char_limit[0]
+    with pytest.raises(ValidationError):
+        adtext_template.full_clean()
+

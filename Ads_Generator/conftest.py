@@ -67,3 +67,18 @@ def adtext_templates(campaigns):
         x.campaign.add(campaign)
         lst.append(x)
     return lst
+
+
+@pytest.fixture
+def adtext_templates_headline_exceed_char_limit(campaigns):
+    lst = []
+    for campaign in campaigns:
+        x = AdTextTemplate.objects.create(
+            adtext_template_headline_1='test template headline1 that have 41char {keyword}',
+            adtext_template_headline_2='test template headline2 that have 41char {keyword}',
+            adtext_template_description_1='test template description 1',
+            adtext_template_description_2='test template description 2',
+            )
+        x.campaign.add(campaign)
+        lst.append(x)
+    return lst
