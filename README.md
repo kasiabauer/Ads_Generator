@@ -1,4 +1,4 @@
-# Ads_Generator
+# Ads_Generator App
 A Django based Project for generating ads from keywords.
 Requirements are based on search ads for *Google Ads* programme for a faster campaign planning. 
 
